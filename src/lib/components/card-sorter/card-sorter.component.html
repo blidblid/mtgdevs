@@ -1,0 +1,10 @@
+<button mat-icon-button
+        [matMenuTriggerFor]="menu">
+  <mat-icon>sort</mat-icon>
+</button>
+
+<mat-menu #menu>
+  <button mat-menu-item (click)="sortByColor()">Sort by color</button>
+  <button mat-menu-item (click)="sortByName()">Sort by name</button>
+  <button mat-menu-item (click)="sortByRarity()">Sort by rarity</button>
+</mat-menu>

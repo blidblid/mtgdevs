@@ -1,0 +1,13 @@
+.app-middle {
+  display: block;
+  padding-top: 32px;
+  padding-bottom: 60px;
+  height: 100%;
+
+  &.app-middle-flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+}

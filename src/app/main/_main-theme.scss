@@ -1,0 +1,28 @@
+@mixin main-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+
+  .app-main-nav-list-item { 
+    background: map-get($background, 'app-bar');
+
+    &.app-main-nav-list-item-activated {
+      background: mat-color($primary);
+
+      &:focus {
+        background: mat-color($primary);
+      }
+
+      &:hover {
+        background: mat-color($primary);
+      }
+    }
+  }
+
+  .app-main-sidenav-container { 
+    .mat-expansion-panel-header {
+      border-bottom: 1px solid map-get($foreground, divider);
+      border-top: 1px solid map-get($foreground, divider);
+    }
+  }
+}

@@ -1,0 +1,164 @@
+$clear-button-size: 24px;
+$card-border-radius: 13px;
+$card-text-height: 32px;
+$card-width: 223px;
+
+.app-card-display {
+  cursor: pointer;
+  position: relative;
+  display: block;
+  width: 100%;
+
+  + .app-card-display {
+    margin-top: -1px;
+  }
+
+  &.app-card-display-nameless {
+    width: auto;
+
+    .app-card-display-text {
+      .app-card-display-main {
+        min-width: 0;
+      }
+    }
+  }
+
+  &.app-card-display-as-image {
+    max-width: $card-width;
+
+    &.app-card-display-tapped {
+      transform: rotate(90deg);
+
+      .app-card-display-counter {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  .app-card-display-sprites {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 8px;
+    min-width: 99px;
+
+    &:hover {
+      .app-card-display-clear-button {
+        opacity: 1;
+      }
+    }
+
+    .app-card-display-clear-button {
+      height: $clear-button-size;
+      line-height: $clear-button-size;
+      width: $clear-button-size;
+      opacity: 0;
+    }
+  }
+
+  .app-card-display-text {
+    display: flex;
+    align-items: center;
+    min-height: $card-text-height;
+
+    .mat-icon {
+      vertical-align: baseline;
+    }
+
+    .app-card-display-number-of,
+    .app-card-display-main,
+    .app-card-display-sprites {
+      height: $card-text-height;
+      line-height: $card-text-height;
+    }
+
+    .app-card-display-name {
+      padding-left: 16px;
+    }
+
+    .app-card-display-number-of {
+      min-width: 32px;
+      display: flex;
+      justify-content: space-around;
+      border-right: none;
+    }
+
+    .app-card-display-main {
+      min-width: 256px;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+
+      @media (max-width: 510px) {
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 510px) {
+      .app-card-display-sprite-container,
+      .app-card-display-mini-image {
+        display: none;
+      }
+
+      .app-card-display-sprites {
+        min-width: 34px;
+        justify-content: space-around;
+        padding-left: 0;
+      }
+    }
+  }
+
+  .app-card-display-image,
+  .app-card-display-mini-image {
+    height: 100%;
+    background-repeat: no-repeat;
+
+    &.app-card-display-image {
+      z-index: 1;
+      border-radius: $card-border-radius;
+      background-size: contain;
+      background-position: center bottom;
+    }
+
+    &.app-card-display-mini-image {
+      width: 49px;
+      background-size: cover;
+      background-position: left 0 top -7px;
+    }
+  }
+
+  .app-card-display-foil-overlay {
+    opacity: 0.5;
+    border-radius: $card-border-radius;
+    pointer-events: none;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(217deg, rgba(255, 0, 0, 0.8), rgba(255, 0, 0, 0) 70.71%), linear-gradient(127deg, rgba(0, 255, 0, 0.8), rgba(0, 255, 0, 0) 70.71%), linear-gradient(336deg, rgba(0, 0, 255, 0.8), rgba(0, 0, 255, 0) 70.71%);
+  }
+
+  .app-card-display-counter {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    .app-card-display-counter-placeholder {
+      text-align: center;
+      line-height: 24px;
+      height: 24px;
+      width: 24px;
+      border-radius: 50%;
+    }
+  }
+}
+
+.app-card-display-dialog .mat-dialog-container {
+  padding: 0;
+  border-radius: 13px;
+
+  .app-card-display {
+    height: 311px;
+  }
+}

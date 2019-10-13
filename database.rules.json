@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "pod": {
+      ".write": true
+    },
+    "play": {
+      ".write": true
+    },
+    "deck": {
+      ".write": true
+    }
+  }
+}

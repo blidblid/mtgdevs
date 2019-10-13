@@ -1,0 +1,29 @@
+@mixin card-display-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+
+  .app-card-display {
+    .app-card-display-number-of,
+    .app-card-display-main,
+    .app-card-display-sprites {
+      border: 1px solid mat-color($foreground, divider);
+      background: mat-color($primary, 0.16);
+
+      &:hover {
+        background: mat-color($primary, 0.5);
+      }
+    }
+
+    .app-card-display-counter-placeholder {
+      background: mat-color($background, card);
+      opacity: 0.9;
+    }
+
+    &:hover {
+      .app-card-display-counter-placeholder {
+        opacity: 1;
+      }
+    }
+  }
+}

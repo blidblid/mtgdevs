@@ -1,0 +1,19 @@
+.app-combat {
+  .mat-table {
+    min-width: 600px;
+  }
+
+  .mat-column-name {
+    flex-grow: 3;
+    cursor: pointer;
+  }
+
+  .mat-column-numberOfWins,
+  .mat-column-numberOfDraws,
+  .mat-column-numberOfLosses,
+  .mat-column-winPercentage,
+  .mat-column-drawPercentage,
+  .mat-column-lossPercentage {
+    flex-grow: 1;
+  }
+}

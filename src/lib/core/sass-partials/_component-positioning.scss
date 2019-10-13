@@ -1,0 +1,88 @@
+$card-height: 311px;
+$card-width: 223px;
+
+@mixin grid {
+  display: grid !important;
+  width: 100%;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+
+  &.grid-end {
+    justify-content: flex-end;
+    justify-items: flex-end;
+  }
+
+  &.grid-baseline {
+    align-items: baseline;
+  }
+}
+
+@mixin component-positioning-theme($theme) {
+  .flex-component + .flex-component,
+  .mat-form-field + .mat-form-field,
+  .mat-form-field + button,
+  button + .mat-form-field,
+  button + .mat-checkbox,
+  button + .positioned-element {
+    margin-left: 16px !important;
+  }
+
+  .mat-card-actions {
+    button + button {
+      margin-left: 8px !important;
+    }
+  }
+
+  .grid-component-small {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  }
+
+  .grid-component {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+
+  .grid-component-large {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, minmax(408px, 1fr));
+
+    @media (max-width: 510px) {
+      grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
+  }
+
+  .grid-component-square {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+  }
+
+  .grid-card {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, $card-width);
+    justify-content: center;
+    grid-auto-rows: $card-height;
+  }
+
+  .grid-card-small {
+    @include grid;
+    grid-template-columns: repeat(auto-fit, #{$card-width / 2});
+    justify-content: center;
+    grid-auto-rows: #{$card-height / 2};
+    grid-column-gap: 8px;
+    grid-row-gap: 8px;
+  }
+
+  .flex-component {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .flex-component-column {
+    display: flex;
+    flex-direction: column;
+  }
+}

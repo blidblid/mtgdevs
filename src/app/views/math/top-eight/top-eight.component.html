@@ -1,0 +1,74 @@
+<app-layout>
+  <app-top>
+    <ng-container [formGroup]="input">
+      <mat-form-field>
+        <input matInput
+               type="number"
+               min="1"
+               [max]="maxPlayers"
+               required
+               placeholder="Total players"
+               formControlName="numberOfPlayers">
+        <mat-error>Enter between 1-{{maxPlayers}} players.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput
+               type="number"
+               min="1"
+               [max]="maxRounds"
+               required
+               placeholder="Number of rounds"
+               formControlName="numberOfRounds">
+        <mat-error>Enter 1-{{maxRounds}} rounds.</mat-error>
+      </mat-form-field>
+    </ng-container>
+
+    <mat-form-field [formGroup]="filter"
+                    *ngIf="input.valid">
+      <input matInput
+             type="number"
+             min="1"
+             [max]="input.value.numberOfRounds"
+             placeholder="Result after round"
+             formControlName="resultAfterRound">
+    </mat-form-field>
+  </app-top>
+
+  <app-middle flex>
+    <div class="mat-elevation-z8 app-top-eight-table-container"
+         *ngIf="input.valid">
+      <mat-table #table
+                 [dataSource]="dataSource">
+
+        <ng-container matColumnDef="position">
+          <mat-header-cell *matHeaderCellDef> Position </mat-header-cell>
+          <mat-cell *matCellDef="let position"> {{position.position}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="wins">
+          <mat-header-cell *matHeaderCellDef> Wins </mat-header-cell>
+          <mat-cell *matCellDef="let position"> {{position.wins}} </mat-cell>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="draws">
+          <mat-header-cell *matHeaderCellDef> Draws </mat-header-cell>
+          <mat-cell *matCellDef="let position"> {{position.draws}} </mat-cell>
+        </ng-container> -->
+
+        <ng-container matColumnDef="losses">
+          <mat-header-cell *matHeaderCellDef> Losses </mat-header-cell>
+          <mat-cell *matCellDef="let position"> {{position.losses}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <mat-paginator #paginator
+                     [pageSize]="8"
+                     [showFirstLastButtons]="true">
+      </mat-paginator>
+    </div>
+  </app-middle>
+</app-layout>

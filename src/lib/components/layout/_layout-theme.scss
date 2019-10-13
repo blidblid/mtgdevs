@@ -1,0 +1,14 @@
+@mixin layout-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+
+  .app-bottom-card-toggle {
+    background: mat-color($primary);
+  }
+
+  .app-right {
+    background: mat-color($background, card);
+  }
+}

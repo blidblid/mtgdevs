@@ -1,0 +1,11 @@
+@mixin deck-builder-theme($theme) {
+  $primary: map-get($theme, primary);
+
+  .app-deck-builder-deck-card {
+    background: mat-color($primary, 0.8);
+
+    &:hover {
+      background: mat-color($primary, 1);
+    }
+  }
+}

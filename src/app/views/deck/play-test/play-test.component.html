@@ -1,0 +1,103 @@
+<app-layout class="app-play-test-layout">
+  <app-top>
+    <ng-container *ngIf="!(started$ | async)">
+      <mat-form-field>
+        <mat-label>Deck</mat-label>
+        <mat-select [formControl]="deckFormControl">
+          <mat-option *ngFor="let storedDeck of storedDecks$ | async"
+                      [value]="storedDeck.deckKey">
+            {{storedDeck.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-checkbox [formControl]="aiEnabledFormControl">Enable AI</mat-checkbox>
+    </ng-container>
+
+    <ng-container *ngIf="aiEnabled && (started$ | async)">
+      <mat-icon color="primary">adb</mat-icon>
+      <span class="app-play-test-card-counter"
+            (click)="aiDiscard()"
+            matTooltip="Force AI discard">
+        {{aiHandSize$ | async}}
+      </span>
+      <app-card-display [card]="cardOnStack$ | async"
+                        removable
+                        nameTooltip="Resolve"
+                        spritesTooltip="Counter"
+                        (cardSelected)="respondToAi(true)"
+                        (cardRemoved)="respondToAi(false)">
+      </app-card-display>
+
+      <app-card-display *ngFor="let play of aiPermanents$ | async"
+                        [card]="play.card"
+                        removable
+                        spritesTooltip="Destroy"
+                        [withSprites]="false"
+                        [withName]="false"
+                        (cardRemoved)="destroyAiPermanent(false)">
+      </app-card-display>
+    </ng-container>
+
+    <app-top-actions *ngIf="started$ | async">
+      <button mat-icon-button
+              color="primary"
+              (click)="clear(true)"
+              matTooltip="Stop (Hotkey X)">
+        <mat-icon>stop</mat-icon>
+      </button>
+      <button mat-icon-button
+              color="primary"
+              (click)="start()"
+              matTooltip="Restart (Hotkey S)">
+        <mat-icon>refresh</mat-icon>
+      </button>
+
+      <button mat-raised-button
+              color="primary"
+              (click)="passTurn()"
+              [disabled]="passDisabled$ | async"
+              matTooltip="Hotkey SPACE">
+        {{passTurnButtonLabel$ | async}}
+      </button>
+      <button mat-raised-button
+              color="primary"
+              (click)="draw()"
+              matTooltip="Hotkey D">
+        Draw
+      </button>
+    </app-top-actions>
+  </app-top>
+
+  <app-middle flex>
+    <app-table *ngIf="started$ | async"
+               [battlefield]="battlefield$ | async"
+               [exile]="exile$ | async"
+               [graveyard]="graveyard$ | async"
+               [hand]="hand$ | async"
+               [land]="land$ | async"
+               [library]="library$ | async"
+               (cardMoved)="onCardMoved($event)"
+               (cardCounterChanged)="onCardCounterChanged($event)"
+               (cardClicked)="onCardClicked($event)">
+    </app-table>
+  </app-middle>
+
+  <app-right *ngIf="started$ | async">
+    <app-counter [icon]="opponentLifeIcon$ | async"
+                 color="accent"
+                 [class.app-play-test-active-opponent]="!(playerTurn$ | async)"
+                 [counter]="opponentLifeSub | async"
+                 matTooltip="Opponent (Hotkey Ctrl + Arrows)"
+                 matTooltipPosition="left"
+                 (counterChanged)="changeLife($event, false)">
+    </app-counter>
+    <app-counter [icon]="playerLifeIcon$ | async"
+                 [class.app-play-test-active-player]="playerTurn$ | async"
+                 [counter]="lifeSub | async"
+                 matTooltip="You (Hotkey Arrows)"
+                 matTooltipPosition="left"
+                 (counterChanged)="changeLife($event)">
+    </app-counter>
+  </app-right>
+</app-layout>

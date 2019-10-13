@@ -1,0 +1,172 @@
+<div class="app-table-battlefield grid-card-small"
+     id="battlefield"
+     #battlefieldList="cdkDropList"
+     [cdkDropListConnectedTo]="allLists"
+     (cdkDropListDropped)="drop($event)"
+     (cdkDropListEntered)="updatePreview(true)"
+     cdkDropList
+     cdkDropListSortingDisabled>
+  <app-card-display *ngFor="let card of battlefield"
+                    cdkDrag
+                    [cdkDragData]="card"
+                    [counter]="card.counter"
+                    (counterChanged)="onCounterChanged($event, card, battlefieldZone)"
+                    (cdkDragStarted)="updatePreview(true)"
+                    (click)="onClick(card, 'battlefield')"
+                    [card]="card"
+                    asImage>
+
+    <app-card-display *cdkDragPlaceholder
+                      [withSprites]="false"
+                      [card]="card"
+                      [asImage]="previewAsImage"
+                      [numberOf]="1">
+    </app-card-display>
+  </app-card-display>
+</div>
+
+<div class="app-table-land grid-card-small"
+     id="land"
+     #landList="cdkDropList"
+     [cdkDropListConnectedTo]="allLists"
+     (cdkDropListDropped)="drop($event)"
+     (cdkDropListEntered)="updatePreview(true)"
+     cdkDropList
+     cdkDropListSortingDisabled>
+  <app-card-display *ngFor="let card of land"
+                    cdkDrag
+                    [cdkDragData]="card"
+                    [counter]="card.counter"
+                    (counterChanged)="onCounterChanged($event, card, landZone)"
+                    (cdkDragStarted)="updatePreview(true)"
+                    (click)="onClick(card, 'land')"
+                    [card]="card"
+                    asImage>
+
+    <app-card-display *cdkDragPlaceholder
+                      [withSprites]="false"
+                      [card]="card"
+                      [asImage]="previewAsImage"
+                      [numberOf]="1">
+    </app-card-display>
+  </app-card-display>
+</div>
+
+<div class="app-table-zones">
+  <div class="app-table-hand"
+       id="hand"
+       #handList="cdkDropList"
+       [cdkDropListConnectedTo]="allLists"
+       (cdkDropListDropped)="drop($event)"
+       (cdkDropListEntered)="updatePreview(true)"
+       cdkDropList
+       cdkDropListSortingDisabled>
+    <app-card-display *ngFor="let card of hand"
+                      [size]="0.5"
+                      cdkDrag
+                      [cdkDragData]="card"
+                      (cdkDragStarted)="updatePreview(true)"
+                      (click)="onClick(card, 'hand')"
+                      [card]="card"
+                      asImage>
+
+      <app-card-display *cdkDragPlaceholder
+                        [withSprites]="false"
+                        [card]="card"
+                        [asImage]="previewAsImage"
+                        [numberOf]="1">
+      </app-card-display>
+    </app-card-display>
+  </div>
+
+  <div class="app-table-small-zones">
+    <mat-expansion-panel id="exile"
+                         #exileExpansion
+                         #exileList="cdkDropList"
+                         expanded
+                         [cdkDropListConnectedTo]="allLists"
+                         (mouseenter)="onExpansionMouseenter(exileZone, $event)"
+                         (cdkDropListDropped)="drop($event)"
+                         (cdkDropListEntered)="updatePreview(false)"
+                         cdkDropList
+                         cdkDropListSortingDisabled>
+      <mat-expansion-panel-header>
+        {{exileContext.title}} ({{exileContext.count}})
+      </mat-expansion-panel-header>
+      <app-card-display *ngFor="let countedCard of exileContext.cards"
+                        [withSprites]="false"
+                        [card]="countedCard.card"
+                        cdkDrag
+                        [cdkDragData]="countedCard.card"
+                        (cdkDragStarted)="updatePreview(false)"
+                        [numberOf]="countedCard.numberOf">
+
+        <app-card-display *cdkDragPlaceholder
+                          [withSprites]="false"
+                          [card]="countedCard.card"
+                          [asImage]="previewAsImage"
+                          [numberOf]="1">
+        </app-card-display>
+      </app-card-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="graveyard"
+                         #graveyardExpansion
+                         #graveyardList="cdkDropList"
+                         expanded
+                         [cdkDropListConnectedTo]="allLists"
+                         (mouseenter)="onExpansionMouseenter(graveyardZone, $event)"
+                         (cdkDropListDropped)="drop($event)"
+                         (cdkDropListEntered)="updatePreview(false)"
+                         cdkDropList
+                         cdkDropListSortingDisabled>
+      <mat-expansion-panel-header>
+        {{graveyardContext.title}} ({{graveyardContext.count}})
+      </mat-expansion-panel-header>
+      <app-card-display *ngFor="let countedCard of graveyardContext.cards"
+                        [withSprites]="false"
+                        [card]="countedCard.card"
+                        cdkDrag
+                        [cdkDragData]="countedCard.card"
+                        (cdkDragStarted)="updatePreview(false)"
+                        [numberOf]="countedCard.numberOf">
+
+        <app-card-display *cdkDragPlaceholder
+                          [withSprites]="false"
+                          [card]="countedCard.card"
+                          [asImage]="previewAsImage"
+                          [numberOf]="1">
+        </app-card-display>
+      </app-card-display>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel id="library"
+                         #libraryExpansion
+                         #libraryList="cdkDropList"
+                         [cdkDropListConnectedTo]="allLists"
+                         (mouseenter)="onExpansionMouseenter(libraryZone, $event)"
+                         (cdkDropListDropped)="drop($event)"
+                         (cdkDropListEntered)="updatePreview(false)"
+                         cdkDropList
+                         cdkDropListSortingDisabled>
+      <mat-expansion-panel-header>
+        {{libraryContext.title}} ({{libraryContext.count}})
+      </mat-expansion-panel-header>
+      <app-card-display *ngFor="let countedCard of libraryContext.cards"
+                        [withSprites]="false"
+                        [card]="countedCard.card"
+                        cdkDrag
+                        [cdkDragData]="countedCard.card"
+                        (cdkDragStarted)="updatePreview(false)"
+                        [numberOf]="countedCard.numberOf">
+
+        <app-card-display *cdkDragPlaceholder
+                          [withSprites]="false"
+                          [card]="countedCard.card"
+                          [asImage]="previewAsImage"
+                          [numberOf]="1">
+        </app-card-display>
+      </app-card-display>
+    </mat-expansion-panel>
+  </div>
+</div>

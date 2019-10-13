@@ -1,0 +1,172 @@
+<app-layout>
+  <app-top class="app-top-limited">
+    <ng-container *ngIf="playing$ | async; else startTmpl">
+      <div class="grid-component-small">
+        <div *ngIf="!(finished$ | async); else scoreHeaderTmpl">
+          <span class="mat-h2">Pack {{packCounter$ | async}}</span>
+          <span class="mat-h2">Pick {{pickCounter$ | async}}</span>
+          <span class="mat-h2">{{draftInformation$ | async}}</span>
+        </div>
+      </div>
+
+      <ng-template #scoreHeaderTmpl>
+        <div class="mat-h2">Submit a maindeck to see your score.</div>
+      </ng-template>
+    </ng-container>
+
+    <ng-container *ngIf="playing$ | async; else startButtonTmpl"
+                  ngProjectAs="app-top-actions">
+      <app-top-actions ngProjectAs="app-top-actions">
+        <button mat-raised-button
+                color="primary"
+                (click)="drop()">
+          Drop
+        </button>
+        <ng-container *ngIf="!(scoredPod$ | async)">
+          <div class="positioned-element"
+               [matTooltip]="deckError$ | async">
+            <button mat-raised-button
+                    color="primary"
+                    [disabled]="!(finished$ | async) || !!(deckError$ | async)"
+                    (click)="submit()">
+              Submit
+            </button>
+          </div>
+          <mat-slide-toggle [formControl]="cardSizeFormControl"></mat-slide-toggle>
+        </ng-container>
+      </app-top-actions>
+    </ng-container>
+
+    <ng-template #startTmpl>
+      <mat-form-field>
+        <mat-label>Nick</mat-label>
+        <input matInput
+               [formControl]="nickFormControl">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Max players</mat-label>
+        <input matInput
+               type="number"
+               [formControl]="maxPlayersFormControl">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Select a set</mat-label>
+        <mat-select [formControl]="setFormControl">
+          <mat-option *ngFor="let set of availableSets"
+                      [value]="set">
+            {{set}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </ng-template>
+
+    <ng-template #startButtonTmpl>
+      <app-top-actions>
+        <div class="flex-component">
+          <button mat-raised-button
+                  color="primary"
+                  [disabled]="!formValid() || hostingDisabled"
+                  (click)="host()">
+            Host
+          </button>
+          <button mat-raised-button
+                  color="primary"
+                  [disabled]="!(playing$ | async)"
+                  (click)="drop()">
+            Drop
+          </button>
+        </div>
+      </app-top-actions>
+    </ng-template>
+  </app-top>
+
+
+  <app-middle>
+    <ng-container *ngIf="playing$ | async; else podsTmpl">
+
+      <!-- Score. -->
+      <ng-container *ngIf="(scoredPod$ | async) as pod; else draftTmpl">
+        <mat-table class="app-limited-score-table mat-elevation-z8"
+                   [dataSource]="pod.players">
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="power">
+            <mat-header-cell *matHeaderCellDef> Power </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.score.power | number:'0.3-3'}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="mana">
+            <mat-header-cell *matHeaderCellDef> Mana </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.score.mana | number:'0.3-3'}}</mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="curve">
+            <mat-header-cell *matHeaderCellDef> Curve </mat-header-cell>
+            <mat-cell *matCellDef="let player"> {{player.score.curve | number:'0.3-3'}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <app-limited-explanation></app-limited-explanation>
+      </ng-container>
+
+      <!-- Draft. -->
+      <ng-template #draftTmpl>
+        <app-card-browser [smallCards]="cardSize$ | async"
+                          [cards]="cards$ | async"
+                          (cardSelected)="onCardSelected($event)">
+        </app-card-browser>
+      </ng-template>
+    </ng-container>
+
+    <!-- Pods. -->
+    <ng-template #podsTmpl>
+      <div class="grid-component-square">
+        <mat-card *ngFor="let pod of pods$ | async">
+          <mat-card-subtitle>{{pod.set}} ({{pod.players.length}}/{{pod.maxPlayers}})</mat-card-subtitle>
+          <mat-card-content>
+            <mat-list>
+              <mat-list-item *ngFor="let player of pod.players">
+                {{player.name}}
+              </mat-list-item>
+            </mat-list>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button
+                    color="primary"
+                    [disabled]="nickFormControl.invalid || pod.key === activePodKey || pod.players.length === pod.maxPlayers"
+                    (click)="join(pod)">
+              Join
+            </button>
+            <button mat-flat-button
+                    color="primary"
+                    [disabled]="pod.key !== activePodKey"
+                    (click)="drop()">
+              Leave
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </ng-template>
+  </app-middle>
+
+  <app-bottom>
+    <app-bottom-toggle-left>
+      Main: {{(mainDeck$ | async)?.length}}
+    </app-bottom-toggle-left>
+
+    <app-deck-display [cards]="mainDeck$ | async"
+                      [sideboard]="sideboard$ | async"
+                      (cardRemoved)="onCardRemoved($event)"
+                      (sideboardCardRemoved)="onSideboardCardRemoved($event)">
+    </app-deck-display>
+
+    <app-bottom-toggle-right>
+      Sideboard: {{(sideboard$ | async)?.length}}
+    </app-bottom-toggle-right>
+
+  </app-bottom>
+</app-layout>

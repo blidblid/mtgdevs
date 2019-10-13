@@ -1,0 +1,68 @@
+<div class="app-card-display-image"
+     *ngIf="asImage; else cardTextTmpl"
+     (click)="onClick()"
+     [style.background-image]="imageUrl">
+
+  <div class="app-card-display-foil-overlay"
+       *ngIf="card?.foil">
+  </div>
+
+  <div class="app-card-display-counter">
+    <div class="app-card-display-counter-placeholder"
+         (click)="onCounterChanged(1); $event.stopPropagation()"
+         *ngIf="counter === 0">
+      +
+    </div>
+
+    <app-counter [counter]="counter"
+                 *ngIf="counter < 0 || counter > 0"
+                 (counterChanged)="onCounterChanged($event)">
+    </app-counter>
+  </div>
+</div>
+
+<ng-template #cardTextTmpl>
+  <div class="app-card-display-text"
+       *ngIf="card">
+    <!-- Card text. -->
+    <span class="app-card-display-number-of"
+          *ngIf="numberOf !== undefined"
+          (click)="cardAdded.emit(card)">
+      {{numberOf}}
+    </span>
+
+    <span class="app-card-display-main"
+          (click)="onClick()"
+          [matTooltip]="nameTooltip">
+
+      <span class="app-card-display-name"
+            *ngIf="withName">
+        {{card?.name}}
+      </span>
+
+      <div class="app-card-display-mini-image"
+           [style.background-image]="imageUrl"
+           (click)="openImage($event)">
+      </div>
+    </span>
+
+    <!-- Mana symbols. -->
+    <span class="app-card-display-sprites"
+          [matTooltip]="spritesTooltip"
+          *ngIf="withSprites || removable"
+          (click)="remove()">
+      <div class="app-card-display-sprite-container"
+           *ngIf="withSprites">
+        <span *ngFor="let sprite of sprites"
+              [ngClass]="sprite">
+        </span>
+      </div>
+
+      <button class="app-card-display-clear-button"
+              *ngIf="removable"
+              mat-icon-button>
+        <mat-icon>clear</mat-icon>
+      </button>
+    </span>
+  </div>
+</ng-template>

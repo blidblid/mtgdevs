@@ -1,0 +1,13 @@
+.app-limited-explanation {
+  .mat-expansion-panel {
+    margin-top: -1px;
+
+    .mat-expansion-panel-header-description {
+      justify-content: center;
+    }
+  }
+
+  .mat-caption {
+    padding: 8px 0;
+  }
+}

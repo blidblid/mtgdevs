@@ -1,0 +1,28 @@
+@import 'src/lib/core/sass-partials/_sprites.scss';
+@import 'src/theme.scss';
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-image: url('./assets/table-background.jpg');
+    background-size: cover;
+}
+
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
+
+router-outlet {
+    display: none;
+}

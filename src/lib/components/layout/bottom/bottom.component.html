@@ -1,0 +1,21 @@
+<mat-card class="app-bottom-card"
+          [@slideUp]="open ? 'open' : 'closed'">
+  <ng-content></ng-content>
+</mat-card>
+
+<div class="app-bottom-card-toggle"
+     (click)="open = !open; $event.stopPropagation()">
+
+  <ng-content select="app-bottom-toggle-left"></ng-content>
+
+  <mat-icon *ngIf="!open">arrow_drop_up</mat-icon>
+  <mat-icon *ngIf="open">arrow_drop_down</mat-icon>
+
+  <ng-content select="app-bottom-toggle-right"></ng-content>
+
+</div>
+
+<div class="app-bottom-backdrop"
+     *ngIf="open"
+     (click)="open = false">
+</div>

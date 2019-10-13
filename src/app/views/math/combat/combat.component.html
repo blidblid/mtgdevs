@@ -1,0 +1,58 @@
+<app-layout>
+  <app-top>
+    <mat-form-field>
+      <mat-select required
+                  placeholder="Set"
+                  [formControl]="setFormControl">
+        <mat-option *ngFor="let set of availableSets"
+                    [value]="set">
+          {{set}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput
+             required
+             placeholder="CMC"
+             type="number"
+             [formControl]="cmcFormControl">
+    </mat-form-field>
+  </app-top>
+
+  <app-middle *ngIf="(combatStats$ | async)">
+    <mat-table [dataSource]="dataSource" matSort #sort="matSort">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let outcome" (click)="onCardClick(outcome.card)"> {{outcome.card.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="numberOfWins">
+        <mat-header-cell *matHeaderCellDef  mat-sort-header> Wins </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.numberOfWins}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="numberOfDraws">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Draws </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.numberOfDraws}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="numberOfLosses">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Losses </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.numberOfLosses}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="winPercentage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Win (%) </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.winPercentage | number:'0.1-1'}}% </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="drawPercentage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Draw (%) </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.drawPercentage | number:'0.1-1'}}% </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="lossPercentage">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Loss (%) </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"> {{outcome.lossPercentage | number:'0.1-1'}}% </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </app-middle>
+</app-layout>

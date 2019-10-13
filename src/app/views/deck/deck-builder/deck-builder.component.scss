@@ -1,0 +1,24 @@
+.app-deck-builder {
+  .mat-card {
+    &.app-deck-builder-card {
+      min-width: 90%;
+    }
+
+    .app-deck-builder-card-filter {
+      width: 100%;
+    }
+  }
+
+  .app-deck-builder-deck-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    .app-deck-builder-delete-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+}

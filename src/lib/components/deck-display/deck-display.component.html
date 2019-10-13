@@ -1,0 +1,53 @@
+<div *ngFor="let typeWithCount of typeWithCounts$ | async">
+
+  <!-- Types. -->
+  <div class="app-deck-display-type-container">
+    {{typeWithCount.name}} ({{typeWithCount.numberOf}})
+  </div>
+
+  <!-- Cards. -->
+  <ng-container *ngFor="let cardWithCount of typeWithCount.cardWithCounts">
+    <app-card-display [card]="cardWithCount.card"
+                      [removable]="!disableRemoving"
+                      [numberOf]="cardWithCount.numberOf"
+                      (cardAdded)="cardAdded.emit(cardWithCount.card)"
+                      (cardRemoved)="cardRemoved.emit(cardWithCount.card)">
+    </app-card-display>
+  </ng-container>
+</div>
+
+<ng-container *ngIf="(sideboard$ | async) as sideboard">
+  <div class="app-deck-display-type-container app-deck-display-sideboard"
+       *ngIf="sideboard.length > 0">
+    Sideboard ({{sideboard.length}})
+    <app-card-display *ngFor="let cardWithCount of sideboard"
+                      [card]="cardWithCount.card"
+                      [removable]="!disableRemoving"
+                      [numberOf]="cardWithCount.numberOf"
+                      (cardAdded)="cardAdded.emit(cardWithCount.card)"
+                      (cardRemoved)="sideboardCardRemoved.emit(cardWithCount.card)">
+    </app-card-display>
+  </div>
+</ng-container>
+
+
+<div class="app-deck-display-actions">
+  <button mat-icon-button
+          (click)="reflow()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+
+  <button class="app-deck-display-card-countable"
+          mat-icon-button
+          [matMenuTriggerFor]="menu">
+    <mat-icon>sort</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button *ngFor="let cardCountable of cardCountables"
+            (click)="countBy(cardCountable)"
+            mat-menu-item>
+      {{cardCountable}}
+    </button>
+  </mat-menu>
+</div>

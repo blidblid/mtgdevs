@@ -1,0 +1,16 @@
+@mixin play-test-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  .app-play-test-active-player {
+    background: mat-color($primary);
+  }
+
+  .app-play-test-active-opponent {
+    background: mat-color($accent);
+  }
+
+  .app-play-test-card-counter {
+    background: mat-color($primary);
+    border: 1px solid mat-color($foreground, divider);
+  }
+}

@@ -1,0 +1,97 @@
+<app-layout>
+  <app-top class="app-top-limited">
+    <mat-form-field>
+      <mat-label>Select a set</mat-label>
+      <mat-select [formControl]="setFormControl">
+        <mat-option *ngFor="let set of availableSets"
+                    [value]="set">
+          {{set}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <app-top-actions>
+      <div class="positioned-element"
+           [matTooltip]="deckError$ | async">
+        <button *ngIf="!(draftScored$ | async)"
+                mat-raised-button
+                [disabled]="!!(deckError$ | async)"
+                (click)="submit()"
+                color="primary">
+          Submit
+        </button>
+      </div>
+      <button mat-icon-button
+              (click)="refresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <app-card-sorter></app-card-sorter>
+      <mat-slide-toggle [formControl]="cardSizeFormControl"></mat-slide-toggle>
+    </app-top-actions>
+  </app-top>
+
+  <app-middle>
+
+    <!-- Score. -->
+    <ng-container *ngIf="draftScored$ | async; else cardTmpl">
+      <mat-table class="app-limited-score-table mat-elevation-z8"
+                 [dataSource]="score$ | async">
+        <ng-container matColumnDef="power">
+          <mat-header-cell *matHeaderCellDef> Power </mat-header-cell>
+          <mat-cell *matCellDef="let score"> {{score.power | number:'0.3-3' }} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="mana">
+          <mat-header-cell *matHeaderCellDef> Mana </mat-header-cell>
+          <mat-cell *matCellDef="let score"> {{score.mana | number:'0.3-3'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="curve">
+          <mat-header-cell *matHeaderCellDef> Curve </mat-header-cell>
+          <mat-cell *matCellDef="let score"> {{score.curve | number:'0.3-3'}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="setCode">
+          <mat-header-cell *matHeaderCellDef> Set </mat-header-cell>
+          <mat-cell *matCellDef="let score"> {{score.setCode}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+          <mat-cell *matCellDef="let score"> {{score.date}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="remove">
+          <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+          <mat-cell *matCellDef="let score">
+            <button (click)="removeScore(score)"
+                    mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+
+      <app-limited-explanation></app-limited-explanation>
+    </ng-container>
+
+    <ng-template #cardTmpl>
+      <app-card-browser [cards]="cards$ | async"
+                        [basics]="basics$ | async"
+                        [smallCards]="cardSize$ | async"
+                        (cardSelected)="onCardSelected($event)">
+      </app-card-browser>
+    </ng-template>
+  </app-middle>
+
+  <app-bottom>
+    <app-bottom-toggle-left>
+      Main: {{mainDeckLength$ | async}}
+    </app-bottom-toggle-left>
+
+    <app-deck-display [cards]="mainDeck$ | async"
+                      (cardRemoved)="onCardRemoved($event)">
+    </app-deck-display>
+
+    <app-bottom-toggle-right>
+      Pool: {{poolLength$ | async}}
+    </app-bottom-toggle-right>
+  </app-bottom>
+</app-layout>

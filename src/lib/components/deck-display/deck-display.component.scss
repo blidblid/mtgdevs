@@ -1,0 +1,24 @@
+.app-deck-display {
+  padding-right: 16px;
+
+  .app-deck-display-type-container {
+    padding-bottom: 8px;
+    text-transform: capitalize;
+  }
+
+  mat-menu {
+    position: absolute;
+  }
+
+  .app-deck-display-actions {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .app-deck-display-sideboard {
+    grid-column: -2 / -1;
+    grid-row: 1 / -1;
+  }
+}

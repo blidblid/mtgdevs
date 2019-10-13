@@ -1,0 +1,85 @@
+<app-layout>
+
+  <app-top>
+    <!-- Card search. -->
+    <mat-form-field class="app-deck-builder-card-filter">
+      <mat-label>Card</mat-label>
+      <input [formControl]="filter"
+             [matAutocomplete]="auto"
+             #filterInput
+             (keydown)="onKeydown($event)"
+             type="text"
+             matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input [formControl]="deckNameFormControl"
+             type="text"
+             matInput>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Dictionary</mat-label>
+      <mat-select [formControl]="dictionaryFormControl">
+        <mat-option *ngFor="let dictionary of dictionaries"
+                    [value]="dictionary">
+          {{dictionary}}
+        </mat-option>
+      </mat-select>
+
+    </mat-form-field>
+
+    <button (click)="clear()"
+            mat-raised-button
+            color="primary">
+      Clear
+    </button>
+
+    <button (click)="fork()"
+            mat-raised-button
+            [disabled]="forkDisabled$ | async"
+            color="primary">
+      Fork
+    </button>
+
+    <mat-autocomplete (optionSelected)="onOptionSelected($event)"
+                      #auto="matAutocomplete"
+                      autoActiveFirstOption>
+      <mat-option *ngFor="let value of autocompleteValues$ | async"
+                  [value]="value.name">
+        {{value.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </app-top>
+
+  <app-middle *ngIf="(cards$ | async) as cards"
+              flex>
+    <mat-card *ngIf="cards.length > 0"
+              class="app-deck-builder-card">
+      <app-deck-display [cards]="cards"
+                        (cardRemoved)="onCardRemoved($event)"
+                        (cardAdded)="onCardAdded($event)">
+      </app-deck-display>
+    </mat-card>
+  </app-middle>
+
+  <app-bottom>
+    <div class="grid-component-square">
+      <mat-card class="app-deck-builder-deck-card mat-h1"
+                *ngFor="let storedDeck of storedDecks$ | async"
+                (click)="load(storedDeck)">
+        {{storedDeck.name}}
+        <button class="app-deck-builder-delete-button"
+                mat-icon-button
+                (click)="remove(storedDeck)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card>
+    </div>
+
+    <app-bottom-toggle-left>
+      Saved: {{(storedDecks$ | async)?.length}}
+    </app-bottom-toggle-left>
+  </app-bottom>
+</app-layout>

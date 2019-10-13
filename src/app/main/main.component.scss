@@ -1,0 +1,79 @@
+$side-nav-width: 256px;
+$layout-padding: 32px;
+
+.app-main-nav-list-item {
+  .mat-icon {
+      margin-right: 8px;
+  }
+}
+
+.mat-toolbar {
+  justify-content: space-between;
+
+  &.mat-toolbar-single-row {
+    min-height: 64px;
+  }
+
+  .app-main-logo {
+    font-family: monospace;
+    outline: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
+}
+
+.mat-drawer-content {
+  &.main-container {
+    display: flex;
+    background-size: contain;
+    background-repeat: no-repeat;
+    justify-content: space-around;
+    background-position: center;
+  }
+}
+
+.app-main-sidenav-container {
+  flex-grow: 1;
+
+  .mat-expansion-panel {
+    border-radius: 0;
+
+    &:not(.mat-expanded) {
+        margin-bottom: -1px;
+    }
+  }
+
+  .mat-nav-list {
+    padding-top: 0;
+  }
+
+  .app-bottom {
+    position: fixed;
+    bottom: 0;
+    overflow-y: auto;
+    left: $side-nav-width + $layout-padding;
+    right: $layout-padding;
+
+    .app-sidenav-closed & {
+      left: $layout-padding;
+    }
+  }
+}
+
+.mat-sidenav {
+  .mat-expansion-panel-body {
+    padding: 0;
+  }
+}
+
+.app-main-sidenav {
+  min-width: $side-nav-width;
+}
+
+.mat-sidenav-container, .mat-sidenav-content {
+  background: transparent;
+}
+
+.mat-sidenav-container {
+  height: calc(100% - 64px);
+}

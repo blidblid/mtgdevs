@@ -1,0 +1,14 @@
+@mixin data-grid-theme($theme) {
+  $background: map-get($theme, background);
+  $foreground: map-get($theme, foreground);
+  $primary: map-get($theme, primary);
+
+
+  .app-data-grid-card {
+    background: mat-color($primary);
+  }
+
+  .app-data-grid-item {
+    background: mat-color($background, card);
+  }
+}

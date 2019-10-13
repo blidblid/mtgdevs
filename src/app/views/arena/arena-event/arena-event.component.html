@@ -1,0 +1,62 @@
+<app-layout class="app-arena-event-layout">
+  <app-top>
+    <div class="flex-component">
+      <mat-form-field>
+        <mat-label>Win percentage</mat-label>
+        <input matInput
+               type="number"
+               min="0"
+               max="100"
+               [formControl]="winPercentage">
+        <span matSuffix>%</span>
+      </mat-form-field>
+
+    </div>
+
+    <div class="flex-component">
+      <ng-container [formGroup]="normalizeFormGroup">
+        <mat-form-field>
+          <mat-label>Gold per gem</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="goldPerGem">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Gold per pack</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="goldPerPack">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Gold per uncommon</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="goldPerUncommon">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Gold per rare</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="goldPerRare">
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Gold per mythic</mat-label>
+          <input matInput
+                 type="number"
+                 formControlName="goldPerMythic">
+        </mat-form-field>
+      </ng-container>
+    </div>
+  </app-top>
+
+  <app-middle>
+    <app-data-grid [data]="data$ | async"
+                   [xAxisCategories]="payoutCategories"
+                   [yAxisCategories]="eventCategories">
+    </app-data-grid>
+  </app-middle>
+</app-layout>

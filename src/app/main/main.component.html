@@ -1,0 +1,69 @@
+<mat-toolbar class="mat-elevation-z12"
+             color="primary">
+
+  <button mat-icon-button
+          (click)="toggleSidenav()">
+    <mat-icon aria-label="Menu">list</mat-icon>
+  </button>
+
+  <a class="app-main-logo"
+     mat-flat-button
+     color="primary"
+     routerLink="/main">
+    mtgdevs
+  </a>
+
+  <div>
+    <a mat-icon-button
+       href="https://www.github.com"
+       matTooltip="GitHub">
+      <mat-icon svgIcon="github"></mat-icon>
+    </a>
+
+    <a mat-icon-button
+       class="app-fill-icon"
+       href="https://www.patreon.com"
+       matTooltip="Patreon">
+      <mat-icon svgIcon="patreon"></mat-icon>
+    </a>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="app-main-sidenav-container">
+  <mat-sidenav class="mat-elevation-z12 app-main-sidenav"
+               position="start"
+               [opened]="true"
+               [mode]="mobileQuery.matches ? 'over' : 'side'"
+               [fixedInViewport]="mobileQuery.matches"
+               [fixedBottomGap]="1"
+               [fixedTopGap]="64">
+
+    <mat-expansion-panel *ngFor="let subcategory of subcategories"
+                         expanded
+                         hideToggle>
+      <mat-expansion-panel-header expandedHeight="48px">
+        <mat-panel-description>
+          {{subcategory.name}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-nav-list>
+        <a mat-list-item
+           [ngClass]="{'app-main-nav-list-item': true, 'app-main-nav-list-item-activated': (activatedView$ | async) === component.link}"
+           *ngFor="let component of subcategory.components"
+           [routerLink]="component.link">
+          <mat-icon> {{component.icon}} </mat-icon>
+          {{ component.name }}
+        </a>
+      </mat-nav-list>
+    </mat-expansion-panel>
+
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-container"
+                       [ngStyle]="{'background-image': backgroundUrl}">
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

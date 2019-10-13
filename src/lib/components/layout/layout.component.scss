@@ -1,0 +1,49 @@
+$panel-height: 64px;
+$card-padding: 32px;
+$layout-padding: 32px;
+
+.app-layout {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  left: $layout-padding;
+  right: $layout-padding;
+  top: $layout-padding;
+  bottom: 0;
+
+  .app-top {
+    display: block;
+    width: 100%;
+    z-index: 1;
+    min-height: $panel-height + $card-padding;
+
+    button + button,
+    .mat-slide-toggle + button {
+      margin-left: 16px;
+    }
+
+    .app-top-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: -$layout-padding;
+      min-height: $panel-height;
+      overflow: auto;
+
+      .app-top-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+
+      .app-top-actions {
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

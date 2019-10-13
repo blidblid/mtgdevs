@@ -1,0 +1,47 @@
+$bottom-toggle-height: 44px;
+
+.app-bottom {
+  display: flex;
+  flex-direction: column;
+
+  .app-bottom-card {
+    z-index: 1;
+  }
+
+  .app-bottom-backdrop {
+    position: fixed;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .app-bottom-card-toggle {
+    display: flex;
+    overflow: hidden;
+    z-index: 1;
+    user-select: none;
+    height: $bottom-toggle-height;
+    cursor: pointer;
+
+    .mat-icon {
+      height: $bottom-toggle-height;
+      width: $bottom-toggle-height;
+      font-size: $bottom-toggle-height;
+    }
+
+    .app-bottom-toggle-left,
+    .app-bottom-toggle-right {
+      display: flex;
+      white-space: nowrap;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .mat-card {
+    overflow: auto;
+  }
+}

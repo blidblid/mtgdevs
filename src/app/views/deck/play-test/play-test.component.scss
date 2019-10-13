@@ -1,0 +1,35 @@
+.app-play-test {
+  .app-play-test-layout {
+    min-width: 680px;
+    min-height: 680px;
+  }
+
+  .app-play-test-card-counter {
+    border-radius: 3px;
+    padding: 4px;
+    margin-right: 3px;
+    cursor: pointer;
+  }
+
+  .app-middle.app-middle-flex {
+    align-items: unset;
+    padding-bottom: 16px;
+  }
+
+  .app-top-container {
+    justify-content: space-between;
+  }
+
+  .app-top .app-card-display {
+    margin: 0 2px;
+
+    .app-card-display-sprites {
+      min-width: 0;
+      padding-left: 0;
+    }
+
+    .app-card-display-main {
+      width: auto;
+    }
+  }
+}

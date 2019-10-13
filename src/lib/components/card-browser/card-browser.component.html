@@ -1,0 +1,11 @@
+<app-card-display *ngFor="let card of cards$ | async"
+                  asImage
+                  [card]="card"
+                  (cardSelected)="cardSelected.emit(card)">
+</app-card-display>
+
+<app-card-display *ngFor="let card of basics$ | async"
+                  asImage
+                  [card]="card"
+                  (cardSelected)="cardSelected.emit(card)">
+</app-card-display>

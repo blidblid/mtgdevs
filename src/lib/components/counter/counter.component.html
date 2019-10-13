@@ -1,0 +1,16 @@
+<button mat-fab
+        [color]="color">
+  {{counter}}
+</button>
+
+<mat-icon class="app-counter-icon">{{icon}}</mat-icon>
+
+<div class="app-counter-increase-icon"
+     (click)="emitChange($event, true)">
+  <mat-icon> add </mat-icon>
+</div>
+
+<div class="app-counter-decrease-icon"
+     (click)="emitChange($event, false)">
+  <mat-icon> remove </mat-icon>
+</div>

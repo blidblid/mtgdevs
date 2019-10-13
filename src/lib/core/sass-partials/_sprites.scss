@@ -1,0 +1,289 @@
+
+@mixin sprite {
+	background-image: url(/assets/sprites.png);
+	background-repeat: no-repeat;
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+  width: 15px;
+  height: 15px;
+}
+
+.sprite-0 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -5px -5px;
+}
+
+.sprite-1 {
+  @include sprite;
+  background-position: -31px -5px;
+}
+
+.sprite-10 {
+  @include sprite;
+  background-position: -56px -5px;
+}
+
+.sprite-11 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -81px -5px;
+}
+
+.sprite-12 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -107px -5px;
+}
+
+.sprite-13 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -133px -5px;
+}
+
+.sprite-15 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -5px -31px;
+}
+
+.sprite-16 {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -31px -31px;
+}
+
+.sprite-2 {
+  @include sprite;
+  background-position: -57px -31px;
+}
+
+.sprite-X {
+  @include sprite;
+  background-position: -6px -56px;;
+}
+
+.sprite-2B {
+  @include sprite;
+  background-position: -82px -31px;
+}
+
+.sprite-2G {
+  @include sprite;
+  background-position: -107px -31px;
+}
+
+.sprite-2R {
+  @include sprite;
+  background-position: -132px -31px;
+}
+
+.sprite-2U {
+  @include sprite;
+  background-position: -57px -56px;
+}
+
+.sprite-2W {
+  @include sprite;
+  background-position: -82px -56px;
+}
+
+.sprite-3 {
+  @include sprite;
+  background-position: -107px -56px;
+}
+
+.sprite-4 {
+  @include sprite;
+  background-position: -132px -56px;
+}
+
+.sprite-5 {
+  @include sprite;
+  background-position: -5px -81px;
+}
+
+.sprite-6 {
+  @include sprite;
+  background-position: -30px -81px;
+}
+
+.sprite-7 {
+  @include sprite;
+  background-position: -55px -81px;
+}
+
+.sprite-8 {
+  @include sprite;
+  background-position: -80px -81px;
+}
+
+.sprite-9 {
+  @include sprite;
+  background-position: -105px -81px;
+}
+
+.sprite-B {
+  @include sprite;
+  background-position: -130px -81px;
+}
+
+.sprite-BG {
+  @include sprite;
+  background-position: -5px -106px;
+}
+
+.sprite-BR {
+  @include sprite;
+  background-position: -30px -106px;
+}
+
+.sprite-BS {
+  @include sprite;
+  background-position: -70px -155px;
+}
+
+.sprite-C {
+  @include sprite;
+  background-position: -55px -106px;
+}
+
+.sprite-CS {
+  @include sprite;
+  background-position: -132px -155px;
+}
+
+.sprite-G {
+  @include sprite;
+  background-position: -80px -106px;
+}
+
+.sprite-GS {
+  @include sprite;
+  background-position: -105px -155px;
+}
+
+.sprite-PB {
+  @include sprite;
+  background-position: -105px -106px;
+}
+
+.sprite-PG {
+  @include sprite;
+  background-position: -130px -106px;
+}
+
+.sprite-PR {
+  @include sprite;
+  background-position: -5px -131px;
+}
+
+.sprite-PU {
+  @include sprite;
+  background-position: -30px -131px;
+}
+
+.sprite-PW {
+  @include sprite;
+  background-position: -55px -131px;
+}
+
+.sprite-R {
+  @include sprite;
+  background-position: -80px -131px;
+}
+
+.sprite-RG {
+  @include sprite;
+  background-position: -105px -131px;
+}
+
+.sprite-RS {
+  @include sprite;
+  background-position: -5px -155px;
+}
+
+.sprite-T {
+  @include sprite;
+  background-position: -130px -131px;
+}
+
+.sprite-U {
+  @include sprite;
+  background-position: -159px -5px;
+}
+
+.sprite-UB {
+  @include sprite;
+  background-position: -159px -30px;
+}
+
+.sprite-UG {
+  @include sprite;
+  background-position: -157px -55px;
+}
+
+.sprite-UR {
+  @include sprite;
+  background-position: -157px -80px;
+}
+
+.sprite-US {
+  @include sprite;
+  background-position: -30px -155px;
+}
+
+.sprite-UT {
+  @include sprite;
+  background-position: -155px -105px;
+}
+
+.sprite-UW {
+  @include sprite;
+  background-position: -155px -130px;
+}
+
+.sprite-W {
+  @include sprite;
+  background-position: -155px -155px;
+}
+
+.sprite-WB {
+  @include sprite;
+  background-position: -184px -5px;
+}
+
+.sprite-WG {
+  @include sprite;
+  background-position: -184px -30px;
+}
+
+.sprite-WR {
+  @include sprite;
+  background-position: -182px -55px;
+}
+
+.sprite-WS {
+  @include sprite;
+  background-position: -55px -155px;
+}
+
+.sprite-energy {
+  @include sprite;
+  background-position: -182px -80px;
+}
+
+.sprite-snow {
+  @include sprite;
+  width: 16px;
+  height: 16px;
+  background-position: -180px -105px;
+}
