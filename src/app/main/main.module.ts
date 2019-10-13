@@ -24,7 +24,7 @@ const views = [
   TopEightModule
 ];
 
-const developingViews = environment.production ? [DraftModule] : [];
+const developingViews = environment.production ? [] : [DraftModule];
 
 @NgModule({
   imports: [
