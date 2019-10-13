@@ -121,8 +121,8 @@ export class PlayTestComponent implements OnDestroy, OnInit {
   }
 
   onCardMoved(event: TableCardMoved): void {
-    this.moveFromZoneToZone(event.card, event.source, event.target);
     event.card.tapped = false;
+    this.moveFromZoneToZone(event.card, event.source, event.target);
   }
 
   onCardCounterChanged(event: TableCardCounterChanged): void {
@@ -378,6 +378,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
+    this.clear(true);
     this.destroySub.next();
     this.destroySub.complete();
   }
