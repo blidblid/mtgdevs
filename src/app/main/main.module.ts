@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { isDevMode } from '@angular/core';
 
 import { MainComponent } from './main.component';
+import { environment } from '../../environments/environment';
 import { MaterialSharedModule } from 'lib/core/shared-modules';
 import { ArenaEventsModule } from '../views/arena/arena-event/arena-event.module';
 import { CombatModule } from '../views/math/combat/combat.module';
@@ -24,7 +24,7 @@ const views = [
   TopEightModule
 ];
 
-const developingViews = isDevMode() ? [DraftModule] : [];
+const developingViews = environment.production ? [DraftModule] : [];
 
 @NgModule({
   imports: [
