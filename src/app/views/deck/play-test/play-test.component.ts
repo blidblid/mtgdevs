@@ -33,7 +33,7 @@ import { AiPlayTemplate, AiEffectType, AiPermanentEffect } from './ai/ai-model';
 export class PlayTestComponent implements OnDestroy, OnInit {
 
   deckFormControl = new FormControl(null, Validators.required);
-  aiEnabledFormControl = new FormControl(true);
+  aiEnabledFormControl = new FormControl(false);
 
   battlefield$: Observable<Card[]>;
   exile$: Observable<Card[]>;

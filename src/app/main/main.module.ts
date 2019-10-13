@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { isDevMode } from '@angular/core';
 
 import { MainComponent } from './main.component';
 import { MaterialSharedModule } from 'lib/core/shared-modules';
@@ -17,19 +18,21 @@ const views = [
   ArenaEventsModule,
   CombatModule,
   DeckBuilderModule,
-  // DraftModule,
   HypergeometricCalculatorModule,
   PlayTestModule,
   SealedModule,
   TopEightModule
 ];
 
+const developingViews = isDevMode() ? [DraftModule] : [];
+
 @NgModule({
   imports: [
     CommonModule,
     MaterialSharedModule,
     RouterModule,
-    ...views
+    ...views,
+    ...developingViews
   ],
   declarations: [
     MainComponent,
