@@ -4,7 +4,6 @@
 @import 'src/app/views/deck/deck-builder/_deck-builder-theme.scss';
 @import 'src/app/views/deck/play-test/_play-test-theme.scss';
 
-@import 'src/lib/components/data-grid/data-grid-theme.scss';
 @import 'src/lib/components/card-display/card-display-theme.scss';
 @import 'src/lib/components/card-browser/card-browser-theme.scss';
 @import 'src/lib/components/layout/layout-theme.scss';
@@ -24,7 +23,6 @@ $theme: mat-dark-theme($primary, $accent);
 
 @include main-theme($theme);
 @include layout-theme($theme);
-@include data-grid-theme($theme);
 @include card-display-theme($theme);
 @include card-browser-theme($theme);
 @include scroll-bar-theme($theme);

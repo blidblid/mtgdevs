@@ -1,9 +1,8 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable, combineLatest } from 'rxjs';
-import { map, share, startWith, filter, shareReplay, distinctUntilChanged } from 'rxjs/operators';
-
-import { MathService } from '@mtg-devs/core';
+import { MatSort, MatTableDataSource } from '@angular/material';
+import { Observable, combineLatest, Subject } from 'rxjs';
+import { map, share, startWith, filter, shareReplay, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
 
 import { ARENA_EVENT, ArenaEvent, Payout, DisplayResult, DisplayPayout, Normalizer } from './arena-event-model';
 import { NORMALIZE_ANIMATION } from './arena-event-animations';
@@ -22,6 +21,9 @@ import { NORMALIZE_ANIMATION } from './arena-event-animations';
 })
 export class ArenaEventComponent implements OnInit {
 
+  @ViewChild('sort', { static: true }) sort: MatSort;
+  dataSource: MatTableDataSource<DisplayPayout> = new MatTableDataSource<DisplayPayout>();
+
   normalizeFormGroup: FormGroup = new FormGroup({
     goldPerGem: new FormControl(7),
     goldPerPack: new FormControl(1000),
@@ -30,25 +32,25 @@ export class ArenaEventComponent implements OnInit {
     goldPerMythic: new FormControl(250)
   });
 
-  winPercentage = new FormControl(50);
+  displayedColumns: string[] = [
+    'name',
+    'gold',
+    'gems',
+    'packs',
+    'uncommons',
+    'rares',
+    'mythics',
+    'normalized'
+  ];
 
+  winPercentage = new FormControl(50);
   normalize: FormControl = new FormControl(true);
 
-  expectedPayout$: Observable<DisplayPayout[]>;
+  private expectedPayout$: Observable<DisplayPayout[]>;
 
-  data$: Observable<number[][]>;
+  private destroySub = new Subject<void>();
 
-  payoutCategories: string[];
-
-  eventCategories: string[];
-
-  constructor(@Inject(ARENA_EVENT) private arenaEvents: ArenaEvent[], private mathService: MathService) { }
-
-
-  private setDataGridProperties(): void {
-    this.payoutCategories = [...Object.keys(this.arenaEvents[0].payouts[0]), 'Total Gold'];
-    this.eventCategories = this.arenaEvents.map(event => event.name);
-  }
+  constructor(@Inject(ARENA_EVENT) private arenaEvents: ArenaEvent[]) { }
 
   /** Builds observable of results from math service. */
   private buildResultObservables(): void {
@@ -78,18 +80,11 @@ export class ArenaEventComponent implements OnInit {
     );
   }
 
-  /** Builds observables of data for child data grid component. */
-  private buildDataGridObservables(): void {
-    this.data$ = this.expectedPayout$.pipe(
-      map(displayPayouts => displayPayouts.map(displayPayout => Object.values(displayPayout.payout)))
-    );
-  }
-
-  private resultToPayout(eventResults: DisplayResult[], norm: Normalizer) {
+  private resultToPayout(eventResults: DisplayResult[], norm: Normalizer): DisplayPayout[] {
     return eventResults.map(eventResult => {
       const arenaEvent = this.arenaEvents.find(event => event.name === eventResult.name);
       const payouts = arenaEvent.payouts;
-      const payout = {} as Payout;
+      const payout = {} as DisplayPayout;
 
       payouts.forEach((winPayout, index) => {
         Object.keys(winPayout).forEach(key => {
@@ -103,11 +98,9 @@ export class ArenaEventComponent implements OnInit {
       });
 
       payout.normalized = this.normalizePayout(payout, norm);
+      payout.name = eventResult.name;
 
-      return {
-        name: eventResult.name,
-        payout
-      };
+      return payout;
     });
   }
 
@@ -194,9 +187,22 @@ export class ArenaEventComponent implements OnInit {
     return endResult;
   }
 
+  private buildDataSource(): void {
+    this.expectedPayout$
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(data => {
+        this.dataSource.data = data;
+        this.dataSource.sort = this.sort;
+      });
+  }
+
   ngOnInit() {
-    this.setDataGridProperties();
     this.buildResultObservables();
-    this.buildDataGridObservables();
+    this.buildDataSource();
+  }
+
+  ngOnDestroy() {
+    this.destroySub.next();
+    this.destroySub.complete();
   }
 }

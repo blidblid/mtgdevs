@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MaterialSharedModule } from '@mtg-devs/core';
-import { DataGridModule, LayoutModule } from '@mtg-devs/components';
+import { LayoutModule } from '@mtg-devs/components';
 
 import { ArenaEventComponent } from './arena-event.component';
 import { SideNavItem, SIDE_NAV_ITEM, SideNavItemSubcategory } from '../../../main/main-model';
@@ -37,7 +37,6 @@ const component: SideNavItem = {
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    DataGridModule,
     LayoutModule,
     MaterialSharedModule
   ],

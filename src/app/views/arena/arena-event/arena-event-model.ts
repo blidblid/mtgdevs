@@ -39,10 +39,7 @@ export interface DisplayResult {
   result: number[];
 }
 
-export interface DisplayPayout {
-  name: string;
-  payout: Payout;
-}
+export type DisplayPayout = Payout & { name: string; }
 
 export interface Normalizer {
   goldPerGem: number;

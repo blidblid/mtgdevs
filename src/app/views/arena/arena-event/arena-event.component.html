@@ -54,9 +54,53 @@
   </app-top>
 
   <app-middle>
-    <app-data-grid [data]="data$ | async"
-                   [xAxisCategories]="payoutCategories"
-                   [yAxisCategories]="eventCategories">
-    </app-data-grid>
+    <mat-table class="mat-elevation-z8"
+               matSort
+               #sort="matSort"
+               [dataSource]="dataSource">
+      <ng-container matColumnDef="name"
+                    sticky>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Event </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.name}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="gold">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Gold </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.gold | number:'0.0-1'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="gems">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Gems </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.gems | number:'0.0-1'}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="packs">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Packs </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.packs | number:'0.0-1'}}</mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="uncommons">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Uncommons </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.uncommons | number:'0.0-2'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="rares">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Rares </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.rares | number:'0.0-2'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="mythics">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Mythics </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.mythics | number:'0.0-2'}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="normalized">
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Total </mat-header-cell>
+        <mat-cell *matCellDef="let event"> {{event.normalized | number:'0.0-1'}} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </app-middle>
 </app-layout>
