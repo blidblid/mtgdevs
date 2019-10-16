@@ -49,7 +49,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
   passTurnButtonLabel$: Observable<string>;
   cardOnStack$: Observable<Card> = this.ai.getCardOnStack();
   aiPermanents$: Observable<AiPlayTemplate[]> = this.aiPermanents.get();
-  aiHandSize$: Observable<number> = this.ai.getAiHandSize()
+  aiHandSize$: Observable<number> = this.ai.getAiHandSize();
   storedDecks$: Observable<StoredDeck[]> = this.storedDeckStore.get();
 
   lifeSub = new BehaviorSubject<number>(20);
@@ -72,7 +72,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     private hand: PlayTestHandStore,
     private land: PlayTestLandStore,
     private library: PlayTestLibraryStore,
-    private filter: CardFilterService,
+    private cardFilter: CardFilterService,
     private storedDeckStore: StoredDeckStoreService,
     private deckService: DeckService,
     private cardAnalyze: CardAnalyzeService,
@@ -89,8 +89,9 @@ export class PlayTestComponent implements OnDestroy, OnInit {
       this.lifeSub.next(20);
       this.opponentLifeSub.next(20);
 
-      if (this.aiEnabled)
+      if (this.aiEnabled) {
         this.ai.init();
+      }
     }
   }
 
@@ -107,7 +108,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
   }
 
   onCardClicked(event: TableCardClicked): void {
-    const handler = this.clickHandlers.find(handler => handler.handles === event.zone);
+    const handler = this.clickHandlers.find(h => h.handles === event.zone);
 
     if (handler) {
       const move = handler.fn(event);
@@ -150,7 +151,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     const cards$ = this.deckKeySub.pipe(
       switchMap(deckKey => this.deckService.getDeck(deckKey)),
       map(userDeck => userDeck.cards),
-      map(cards => this.filter.byRandomness(cards))
+      map(cards => this.cardFilter.byRandomness(cards))
     );
 
     cards$
@@ -164,12 +165,12 @@ export class PlayTestComponent implements OnDestroy, OnInit {
           this.hand.add(cards.pop());
         }
       });
-  };
+  }
 
   private buildGamePlayObservables(): void {
     const keydown$ = fromEvent<KeyboardEvent>(document.body, 'keydown');
-    const keyCode$ = keydown$.pipe(map(event => !event.ctrlKey && event.keyCode));
-    const ctrlKeyCode$ = keydown$.pipe(map(event => event.ctrlKey && event.keyCode));
+    const keyCode$ = keydown$.pipe(map(event => !event.ctrlKey && event.keyCode)); //tslint:disable-line
+    const ctrlKeyCode$ = keydown$.pipe(map(event => event.ctrlKey && event.keyCode)); //tslint:disable-line
 
     const draw$ = merge(keyCode$.pipe(filter(k => k === D)), this.drawSub);
     const stop$ = keyCode$.pipe(filter(k => k === X));
@@ -242,7 +243,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
         this.ai.tick();
         const effects: AiPermanentEffect[] = aiPermanents.reduce((acc, curr) => {
           return curr.effects ? [...acc, ...curr.effects] : acc;
-        }, [])
+        }, []);
         this.triggerAiEffects(effects);
       });
 
@@ -269,7 +270,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
         }
         return card;
       })));
-    }
+    };
 
     this.exile$ = addDefaults(this.exile.get());
     this.graveyard$ = addDefaults(this.graveyard.get());
@@ -278,31 +279,31 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     this.library$ = addDefaults(this.library.get());
     this.land$ = addDefaults(this.land.get(), 0);
     this.battlefield$ = addDefaults(this.battlefield.get(), 0);
-    this.started$ = combineLatest(
+    this.started$ = combineLatest([
       this.battlefield$,
       this.exile$,
       this.graveyard$,
       this.hand$,
       this.land$,
       this.library$
-    ).pipe(
+    ]).pipe(
       map(cards => cards.reduce((acc, curr) => [...acc, ...curr], []).length > 0),
       share()
-    )
+    );
   }
 
   private buildLifeCounterObservables(): void {
     const iconByLifeTotal = (life: number) => {
       if (life >= 20) {
-        return 'sentiment_very_satisfied'
+        return 'sentiment_very_satisfied';
       } else if (life >= 10) {
-        return 'sentiment_satisfied'
+        return 'sentiment_satisfied';
       } else if (life >= 1) {
-        return 'sentiment_dissatisfied'
+        return 'sentiment_dissatisfied';
       } else {
-        return 'sentiment_very_dissatisfied'
+        return 'sentiment_very_dissatisfied';
       }
-    }
+    };
 
     this.playerLifeIcon$ = this.lifeSub.pipe(
       map(life => iconByLifeTotal(life))
@@ -358,7 +359,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
           this.ai.drawCard(effect.amount);
           break;
       }
-    })
+    });
   }
 
   private changeLife(changeWith: number, player: boolean = true): void {

@@ -18,7 +18,7 @@ export interface Card {
   types: Type[];
   rarity: string;
   loyalty: string;
-  multiverseId?: string;
+  multiverseId?: number;
 
   // Added by mtg-devs
   foil: boolean;
