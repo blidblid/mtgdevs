@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "noImplicitAny": false,
+    "baseUrl": "./",
+    "outDir": "./dist",
+    "jsx": "preserve",
+    "lib": ["dom", "es2016"],
+    "maxNodeModuleJsDepth": 5,
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext"
+  }
+}
