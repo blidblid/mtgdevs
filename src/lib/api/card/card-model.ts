@@ -20,6 +20,9 @@ export interface Card {
   loyalty: string;
   multiverseId?: number;
 
+  // From scryfall
+  scryfallImage: string;
+
   // Added by mtg-devs
   foil: boolean;
   cacheTimeStamp: string;

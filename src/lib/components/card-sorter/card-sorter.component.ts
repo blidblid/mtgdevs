@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { CardSorterService } from '@mtg-devs/core';
 
@@ -8,21 +8,19 @@ import { CardSorterService } from '@mtg-devs/core';
   templateUrl: './card-sorter.component.html',
   styleUrls: ['./card-sorter.component.scss']
 })
-export class CardSorterComponent implements OnInit {
+export class CardSorterComponent {
 
   sortByColor(): void {
     this.cardSorterService.sortByColor();
   }
-  
+
   sortByName(): void {
     this.cardSorterService.sortByName();
   }
-  
+
   sortByRarity(): void {
     this.cardSorterService.sortByRarity();
   }
 
   constructor(private cardSorterService: CardSorterService) { }
-
-  ngOnInit() { }
 }

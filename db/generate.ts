@@ -9,7 +9,7 @@ import {
   INCLUDED_CARD_PROPERTIES,
   INCLUDED_SET_PROPERTIES
 } from './model';
-import { requestMtgJson } from './download';
+import { requestMtgJson, requestScryfall } from './download';
 import { removeInvalid, withoutKeyValue, minify, addKeyFromCards, buildDictionaries } from './util';
 import { CardSet, Card } from '../src/lib/api/card/card-model';
 
@@ -19,6 +19,7 @@ import { CardSet, Card } from '../src/lib/api/card/card-model';
 
   const mtgJsonCard = await requestMtgJson('AllCards', downloadNew);
   const mtgJsonSet = await requestMtgJson('AllSets', downloadNew);
+  const scryfallCards: Card[] = await requestScryfall(downloadNew);
   const mtgJsonCards: Card[] = Object.values(mtgJsonCard);
   const mtgJsonSets: CardSet[] =  Object.values(mtgJsonSet);
   const mtgJsonSetCards: Card[] = mtgJsonSets.reduce((acc, curr) => [...acc, ...curr.cards], [] as Card[]);
@@ -55,7 +56,9 @@ import { CardSet, Card } from '../src/lib/api/card/card-model';
   Object.values(basic).forEach(card => minify(card, INCLUDED_CARD_PROPERTIES));
   mtgJsonSets.forEach(set => minify(set, INCLUDED_SET_PROPERTIES));
 
-  addKeyFromCards(mtgJsonCards, mtgJsonSetCards, 'multiverseId');
+  // Add missing keys from other cards.
+  addKeyFromCards(mtgJsonCards, mtgJsonSetCards, ['multiverseId']);
+  addKeyFromCards(mtgJsonCards, scryfallCards, ['image_uris', 'normal'], 'scryfallImage');
 
   const db = {
     card: mtgJsonCard,

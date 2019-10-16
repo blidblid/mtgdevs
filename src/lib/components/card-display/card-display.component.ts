@@ -36,7 +36,7 @@ export class CardDisplayComponent implements OnInit {
   @Input()
   get card() {
     return this._card;
-  };
+  }
   set card(value: Card) {
     this._card = value;
     this.updateImageUrl();
@@ -135,8 +135,11 @@ export class CardDisplayComponent implements OnInit {
       return;
     }
 
-    this.imageUrl =
-      `url(https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.card.multiverseId}&type=card)`;
+    console.log(this.card);
+
+    this.imageUrl = this.card.scryfallImage
+      ? `url(${this.card.scryfallImage})`
+      : `url(https://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=${this.card.multiverseId}&type=card)`;
   }
 
   ngOnInit() {

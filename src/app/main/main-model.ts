@@ -22,7 +22,7 @@ export enum SideNavItemSubcategory {
 
 export interface Subcategory {
   name: string;
-  components: SideNavItem[]
+  components: SideNavItem[];
 }
 
 export const PLAY_MATS = [

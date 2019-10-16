@@ -6,14 +6,10 @@ export function removeInvalid(removeFrom: any) {
     // Remove keys that are non-compatible with Firebase.
     if (key.match(/[\$\#\[\]\/\.]/g)) {
       delete removeFrom[key];
-    }
-    // Remove duplicates, i.e. keys with (b), (c), ... (d) etc.
-    else if (key.match(/\([b-z]\)/g)) {
+    } else if (key.match(/\([b-z]\)/g)) { // Remove duplicates, i.e. keys with (b), (c), ... (d) etc.
       delete removeFrom[key];
-    }
-    // Rename all keys with (a) in them.
-    else if (key.includes(' (a)')) {
-      const newKey = (key + '').replace(' (a)', '')
+    } else if (key.includes(' (a)')) { // Rename all keys with (a) in them.
+      const newKey = (key + '').replace(' (a)', '');
       delete Object.assign(removeFrom, { [newKey]: removeFrom[key] })[key];
     }
   });
@@ -29,13 +25,16 @@ export function minify(removeFrom: any, includedKeys: string[]) {
       delete removeFrom[key];
     }
   });
-};
+}
 
-export function addKeyFromCards(cards: Card[], addFrom: Card[], key: string) {
+export function addKeyFromCards(cards: Card[], addFrom: Card[], keys: string[], renameToKey?: string) {
   cards.forEach(card => {
     const fromCard = addFrom.find(c => c.name === card.name);
-    if (fromCard && fromCard[key]) {
-      card[key] = fromCard[key];
+    if (fromCard) {
+      const property = keys.reduce((acc, curr) => acc[curr], fromCard);
+      if (property) {
+        card[renameToKey || keys[0]] = property;
+      }
     }
   });
 }
@@ -63,8 +62,8 @@ export function buildDictionaries(cards: Card[], cacheTimeStamp: string) {
       return {
         name: card.name,
         type: card.type
-      }
-    })
+      };
+    });
   });
 
   return dictionaries;

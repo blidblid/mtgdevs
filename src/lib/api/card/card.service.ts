@@ -20,8 +20,8 @@ export class CardService {
 
   getCards(cardName: string, numberOf: number): Observable<Card[]> {
     return this.getCard(cardName).pipe(
-      map(card => Array(numberOf).fill(card).map(card => {
-        return { ...card };
+      map(card => Array(numberOf).fill(card).map(c => {
+        return { ...c };
       }))
     );
   }
