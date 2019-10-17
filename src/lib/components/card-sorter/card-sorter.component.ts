@@ -10,6 +10,8 @@ import { CardSorterService } from '@mtg-devs/core';
 })
 export class CardSorterComponent {
 
+  constructor(private cardSorterService: CardSorterService) { }
+
   sortByColor(): void {
     this.cardSorterService.sortByColor();
   }
@@ -21,6 +23,4 @@ export class CardSorterComponent {
   sortByRarity(): void {
     this.cardSorterService.sortByRarity();
   }
-
-  constructor(private cardSorterService: CardSorterService) { }
 }

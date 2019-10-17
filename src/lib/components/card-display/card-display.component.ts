@@ -130,12 +130,10 @@ export class CardDisplayComponent implements OnInit {
   }
 
   private updateImageUrl(): void {
-    if (!this.card || !this.card.multiverseId) {
+    if (!this.card || (!this.card.multiverseId && !this.card.scryfallImage)) {
       this.imageUrl = '';
       return;
     }
-
-    console.log(this.card);
 
     this.imageUrl = this.card.scryfallImage
       ? `url(${this.card.scryfallImage})`
