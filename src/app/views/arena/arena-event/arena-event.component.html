@@ -1,19 +1,17 @@
 <app-layout class="app-arena-event-layout">
   <app-top>
-    <div class="flex-component">
-      <mat-form-field>
-        <mat-label>Win percentage</mat-label>
-        <input matInput
-               type="number"
-               min="0"
-               max="100"
-               [formControl]="winPercentage">
-        <span matSuffix>%</span>
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Win percentage</mat-label>
+      <input matInput
+             type="number"
+             min="0"
+             max="100"
+             [formControl]="winPercentage">
+      <span matSuffix>%</span>
+    </mat-form-field>
 
-    </div>
 
-    <div class="flex-component">
+    <app-top-actions>
       <ng-container [formGroup]="normalizeFormGroup">
         <mat-form-field>
           <mat-label>Gold per gem</mat-label>
@@ -50,7 +48,7 @@
                  formControlName="goldPerMythic">
         </mat-form-field>
       </ng-container>
-    </div>
+    </app-top-actions>
   </app-top>
 
   <app-middle>

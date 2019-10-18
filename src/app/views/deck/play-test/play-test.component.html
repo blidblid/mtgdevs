@@ -11,7 +11,37 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox [formControl]="aiEnabledFormControl">Enable AI</mat-checkbox>
+      <app-top-actions>
+        <ng-container *ngIf="aiEnabled">
+          <mat-form-field>
+            <mat-label>AI plays</mat-label>
+            <mat-select [formControl]="aiPlaysFormControl"
+                        multiple>
+              <mat-optgroup label="Interaction">
+                <mat-option *ngFor="let play of aiInteractionPlays"
+                            [value]="play">
+                  {{play.cardName}}
+                </mat-option>
+              </mat-optgroup>
+              <mat-optgroup label="Permanents">
+                <mat-option *ngFor="let play of aiPermanentPlays"
+                            [value]="play">
+                  {{play.cardName}}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>AI draws every n:th turn</mat-label>
+            <input matInput
+                   type="number"
+                   [formControl]="aiDrawModuloFormControl">
+          </mat-form-field>
+        </ng-container>
+
+        <mat-checkbox [formControl]="aiEnabledFormControl">Enable AI</mat-checkbox>
+      </app-top-actions>
     </ng-container>
 
     <ng-container *ngIf="aiEnabled && (started$ | async)">

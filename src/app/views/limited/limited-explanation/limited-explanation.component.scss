@@ -7,6 +7,11 @@
     }
   }
 
+  .app-limited-explanation-content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .mat-caption {
     padding: 8px 0;
   }

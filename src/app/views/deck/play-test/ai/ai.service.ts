@@ -1,6 +1,6 @@
-import { Injectable, Inject, OnDestroy } from '@angular/core';
-import { Subject, Observable, zip, merge } from 'rxjs';
-import { withLatestFrom, map, switchMap, filter, tap, startWith, takeUntil, share } from 'rxjs/operators';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject, Observable, zip, merge, of } from 'rxjs';
+import { withLatestFrom, map, switchMap, filter, tap, startWith, takeUntil, share, scan, delay } from 'rxjs/operators';
 
 import { CardService, Card } from '@mtg-devs/api';
 import { TableZone, TableCardMoved } from '@mtg-devs/components';
@@ -9,7 +9,6 @@ import { AiPlayTemplate, AiPlay, AI_PLAY, AiPlayType } from './ai-model';
 import { PlayTestAiHandStore } from '../store/play-test-ai-hand-store';
 import { PlayTestBattlefieldStore } from '../store/play-test-battlefield-store';
 import { PlayTestLandStore } from '../store/play-test-land-store';
-import { PlayTestHandStore } from '../store/play-test-hand-store';
 
 
 @Injectable({ providedIn: 'root' })
@@ -18,28 +17,27 @@ export class AiService implements OnDestroy {
   private tickSub = new Subject<void>();
   private responseSub = new Subject<boolean>();
   private destroySub = new Subject<void>();
+  private drawModuloSub = new Subject<number>();
 
   private hand$: Observable<AiPlayTemplate[]>;
   private playCard$: Observable<AiPlay | null>;
   private battlefield$: Observable<Card[]> = this.battlefield.get();
   private land$: Observable<Card[]> = this.land.get();
-  private playerHand$: Observable<Card[]> = this.playerHand.get();
   private cardOnStack$: Observable<Card | null>;
   private resolvedPlay$: Observable<AiPlay>;
+
+  private aiPlays: AiPlayTemplate[] = [];
 
   constructor(
     private cardService: CardService,
     private hand: PlayTestAiHandStore,
     private battlefield: PlayTestBattlefieldStore,
-    private land: PlayTestLandStore,
-    private playerHand: PlayTestHandStore,
-    @Inject(AI_PLAY) private aiPlays: AiPlayTemplate[]
+    private land: PlayTestLandStore
   ) {
     this.buildObservables();
   }
 
   tick(): void {
-    this.drawCard();
     this.tickSub.next();
   }
 
@@ -47,11 +45,10 @@ export class AiService implements OnDestroy {
     this.responseSub.next(resolve);
   }
 
-  init(): void {
-    let cardsInHand = 3;
-    while (cardsInHand--) {
-      this.drawCard();
-    }
+  init(drawModulo: number, aiPlays: AiPlayTemplate[]): void {
+    this.hand.clear();
+    this.aiPlays = aiPlays;
+    this.drawModuloSub.next(drawModulo);
   }
 
   getAiMovedCard(): Observable<TableCardMoved> {
@@ -62,7 +59,7 @@ export class AiService implements OnDestroy {
           card: play.target,
           source: play.source,
           target: play.template.resolutionZone
-        }
+        };
       })
     );
   }
@@ -84,12 +81,6 @@ export class AiService implements OnDestroy {
     );
   }
 
-  getAiPassed(): Observable<null> {
-    return this.playCard$.pipe(
-      filter((play): play is null => play === null)
-    );
-  }
-
   drawCard(amount: number = 1): void {
     while (amount--) {
       this.hand.add(this.getRandom(this.aiPlays));
@@ -105,15 +96,20 @@ export class AiService implements OnDestroy {
   private buildObservables(): void {
     this.hand$ = this.hand.get().pipe(
       switchMap(plays => {
+        if (plays.length === 0) {
+          return of([]);
+        }
+
         return zip(...plays.map(play => {
           return this.cardService.getCard(play.cardName).pipe(
             map(card => Object.assign(play, { card }))
-          )
-        }))
+          );
+        }));
       })
     );
 
     this.playCard$ = this.tickSub.pipe(
+      delay(0), // wait for stores to update at beginning of turn
       withLatestFrom(this.hand$, this.battlefield$, this.land$),
       map(([, cards, battlefield, land]) => this.findPlay(cards, battlefield, land)),
       share()
@@ -130,8 +126,18 @@ export class AiService implements OnDestroy {
     );
 
     this.resolvedPlay$
-      .pipe(withLatestFrom(this.playCard$), takeUntil(this.destroySub))
-      .subscribe(([, play]) => this.hand.remove(play.template));
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(play => this.hand.remove(play.template));
+
+    const drawCard$ = merge(this.drawModuloSub, this.tickSub).pipe(
+      scan((acc, curr) => typeof curr === 'number' ? 0 : acc + 1, 0),
+      withLatestFrom(this.drawModuloSub),
+      filter(([counter, drawModulo]) => counter % drawModulo === 0)
+    );
+
+    drawCard$
+      .pipe(takeUntil(this.destroySub))
+      .subscribe(() => this.drawCard());
   }
 
   private findPlay(hand: AiPlayTemplate[], battlefield: Card[], land: Card[]): AiPlay | null {
@@ -154,7 +160,7 @@ export class AiService implements OnDestroy {
 
     return plays
       .filter(play => !!play)
-      .sort((a, b) => b.score - a.score)[0] || null
+      .sort((a, b) => b.score - a.score)[0] || null;
   }
 
   private findInteractionPlayInZone(plays: AiPlayTemplate[], cards: Card[], zone: TableZone): AiPlay | null {

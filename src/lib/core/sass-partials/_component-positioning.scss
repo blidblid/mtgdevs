@@ -18,13 +18,10 @@ $card-width: 223px;
 }
 
 @mixin component-positioning-theme($theme) {
-  .flex-component + .flex-component,
-  .mat-form-field + .mat-form-field,
-  .mat-form-field + button,
-  button + .mat-form-field,
-  button + .mat-checkbox,
-  button + .positioned-element {
-    margin-left: 16px !important;
+  .app-top-container > *, .app-top-actions > * {
+     + * {
+      margin-left: 16px !important;
+    }
   }
 
   .mat-card-actions {
@@ -72,17 +69,5 @@ $card-width: 223px;
     grid-auto-rows: #{$card-height / 2};
     grid-column-gap: 8px;
     grid-row-gap: 8px;
-  }
-
-  .flex-component {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: nowrap;
-  }
-
-  .flex-component-column {
-    display: flex;
-    flex-direction: column;
   }
 }

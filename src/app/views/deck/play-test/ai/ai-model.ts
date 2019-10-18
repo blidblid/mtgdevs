@@ -4,9 +4,9 @@ import { Type, Card } from '@mtg-devs/api';
 import { TableZone } from '@mtg-devs/components';
 
 export interface AiPlay {
-  template: AiPlayTemplate
-  target?: Card,
-  source?: TableZone,
+  template: AiPlayTemplate;
+  target?: Card;
+  source?: TableZone;
 
   /** Fraction between target cmc and play cmc. */
   score?: number;
@@ -16,9 +16,6 @@ export interface AiPlayTemplate {
   cardName: string;
   card: Card;
   type: AiPlayType;
-
-  /** Power level on a scale 1-100. */
-  power: number;
 
   target?: AiTargetCriteria;
 
@@ -39,7 +36,7 @@ export interface AiTargetCriteria {
 }
 
 export interface AiPermanentEffect {
-  amount: number,
+  amount: number;
   type: AiEffectType;
 }
 

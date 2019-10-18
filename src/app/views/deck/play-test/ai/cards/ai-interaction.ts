@@ -1,14 +1,13 @@
 import { TableZone } from '@mtg-devs/components';
 import { TypesHelper } from '@mtg-devs/api';
 
-import { AiPlayTemplate, AI_PLAY, AiPlayType } from '../ai-model';
+import { AiPlayTemplate, AiPlayType } from '../ai-model';
 
 
 export const UNSUMMON: AiPlayTemplate = {
   cardName: 'Unsummon',
   type: AiPlayType.Interaction,
   card: null,
-  power: 50,
   resolutionZone: TableZone.Hand,
   target: {
     zones: [TableZone.Battlefield, TableZone.Land],
@@ -16,15 +15,25 @@ export const UNSUMMON: AiPlayTemplate = {
   }
 };
 
-export const DURESS: AiPlayTemplate = {
-  cardName: 'Duress',
+export const MURDER: AiPlayTemplate = {
+  cardName: 'Murder',
   type: AiPlayType.Interaction,
   card: null,
-  power: 50,
   resolutionZone: TableZone.Graveyard,
   target: {
-    zones: [TableZone.Hand],
-    types: TypesHelper.nonCreatureNonLand
+    zones: [TableZone.Battlefield, TableZone.Land],
+    types: [TypesHelper.creature]
+  }
+};
+
+export const STONE_RAIN: AiPlayTemplate = {
+  cardName: 'Stone rain',
+  type: AiPlayType.Interaction,
+  card: null,
+  resolutionZone: TableZone.Graveyard,
+  target: {
+    zones: [TableZone.Battlefield, TableZone.Land],
+    types: [TypesHelper.land]
   }
 };
 
@@ -32,7 +41,6 @@ export const HEROS_DOWNFALL: AiPlayTemplate = {
   cardName: 'Hero\'s Downfall',
   type: AiPlayType.Interaction,
   card: null,
-  power: 50,
   resolutionZone: TableZone.Graveyard,
   target: {
     zones: [TableZone.Battlefield, TableZone.Land],
@@ -42,6 +50,7 @@ export const HEROS_DOWNFALL: AiPlayTemplate = {
 
 export const AI_INTERACTIONS = [
   UNSUMMON,
-  DURESS,
-  HEROS_DOWNFALL
+  MURDER,
+  HEROS_DOWNFALL,
+  STONE_RAIN
 ];

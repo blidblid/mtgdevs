@@ -29,6 +29,13 @@
       max-height: 133px;
       overflow-x: auto;
     }
+
+    .mat-expansion-panel-content.ng-animating {
+      .mat-expansion-panel-body {
+        overflow: hidden;
+        overflow-x: hidden;
+      }
+    }
   }
 
   .app-table-zones {

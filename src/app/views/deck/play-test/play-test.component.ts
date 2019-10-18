@@ -18,7 +18,7 @@ import { StoredDeckStoreService } from 'app/views/limited/sealed/stored-deck-sto
 import { PLAY_TEST_CLICK_HANDLER, PlayTestClickHandler } from './play-test-click-handler';
 import { AiService } from './ai/ai.service';
 import { PlayTestAiPermanentStore } from './store/play-test-ai-permanent-store';
-import { AiPlayTemplate, AiEffectType, AiPermanentEffect } from './ai/ai-model';
+import { AiPlayTemplate, AiEffectType, AiPermanentEffect, AI_PLAY, AiPlayType } from './ai/ai-model';
 
 
 @Component({
@@ -34,6 +34,8 @@ export class PlayTestComponent implements OnDestroy, OnInit {
 
   deckFormControl = new FormControl(null, Validators.required);
   aiEnabledFormControl = new FormControl(false);
+  aiPlaysFormControl = new FormControl(this.aiPlayTemplates, [Validators.required, Validators.minLength(1)]);
+  aiDrawModuloFormControl = new FormControl(1, [Validators.required, Validators.min(1), Validators.max(5)]);
 
   battlefield$: Observable<Card[]>;
   exile$: Observable<Card[]>;
@@ -55,6 +57,9 @@ export class PlayTestComponent implements OnDestroy, OnInit {
   lifeSub = new BehaviorSubject<number>(20);
   opponentLifeSub = new BehaviorSubject<number>(20);
 
+  aiInteractionPlays: AiPlayTemplate[];
+  aiPermanentPlays: AiPlayTemplate[];
+
   private zoneStores = [this.battlefield, this.exile, this.graveyard, this.hand, this.land, this.library];
   private drawSub = new Subject<void>();
   private destroySub = new Subject<void>();
@@ -63,6 +68,14 @@ export class PlayTestComponent implements OnDestroy, OnInit {
 
   get aiEnabled(): boolean {
     return this.aiEnabledFormControl.value;
+  }
+
+  get aiPlays(): AiPlayTemplate[] {
+    return this.aiPlaysFormControl.value;
+  }
+
+  get aiDrawModulo(): number {
+    return this.aiDrawModuloFormControl.value;
   }
 
   constructor(
@@ -78,21 +91,28 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     private cardAnalyze: CardAnalyzeService,
     private ai: AiService,
     private aiPermanents: PlayTestAiPermanentStore,
-    @Inject(PLAY_TEST_CLICK_HANDLER) private clickHandlers: PlayTestClickHandler[]
-  ) { }
+    @Inject(PLAY_TEST_CLICK_HANDLER) private clickHandlers: PlayTestClickHandler[],
+    @Inject(AI_PLAY) private aiPlayTemplates: AiPlayTemplate[]
+  ) {
+    this.setPlayTemplates();
+  }
 
   start(): void {
     this.clear();
 
-    if (this.deckFormControl.valid) {
-      this.deckKeySub.next(this.deckFormControl.value);
-      this.lifeSub.next(20);
-      this.opponentLifeSub.next(20);
-
-      if (this.aiEnabled) {
-        this.ai.init();
-      }
+    if (this.deckFormControl.invalid) {
+      return;
     }
+
+    this.deckKeySub.next(this.deckFormControl.value);
+    this.lifeSub.next(20);
+    this.opponentLifeSub.next(20);
+
+    if (!this.aiEnabled || this.aiPlaysFormControl.invalid || this.aiDrawModuloFormControl.invalid) {
+      return;
+    }
+
+    this.ai.init(this.aiDrawModulo, this.aiPlays);
   }
 
   draw(): void {
@@ -182,10 +202,10 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     const ctrlDownArrow$ = ctrlKeyCode$.pipe(filter(k => k === DOWN_ARROW));
     this.passDisabled$ = this.ai.getCardOnStack().pipe(map(card => !!card));
 
-    this.playerTurn$ = merge(this.passTurnSub, space$).pipe(
+    this.playerTurn$ = merge(this.passTurnSub, space$, start$.pipe(map(() => 'started'))).pipe(
       withLatestFrom(this.passDisabled$),
       filter(([, passDisabled]) => !passDisabled),
-      scan<[void, boolean], boolean>(acc => !this.aiEnabled || !acc, true),
+      scan((acc, [latest]) => latest === 'started' ? true : (!this.aiEnabled || !acc), true),
       startWith(true),
       shareReplay(1)
     );
@@ -246,10 +266,6 @@ export class PlayTestComponent implements OnDestroy, OnInit {
         }, []);
         this.triggerAiEffects(effects);
       });
-
-    this.ai.getAiPassed()
-      .pipe(takeUntil(this.destroySub))
-      .subscribe(() => this.passTurn());
 
     merge(upArrow$, downArrow$)
       .pipe(takeUntil(this.destroySub))
@@ -360,6 +376,11 @@ export class PlayTestComponent implements OnDestroy, OnInit {
           break;
       }
     });
+  }
+
+  private setPlayTemplates(): void {
+    this.aiInteractionPlays = this.aiPlayTemplates.filter(play => play.type === AiPlayType.Interaction);
+    this.aiPermanentPlays = this.aiPlayTemplates.filter(play => play.type === AiPlayType.Permanent);
   }
 
   private changeLife(changeWith: number, player: boolean = true): void {
