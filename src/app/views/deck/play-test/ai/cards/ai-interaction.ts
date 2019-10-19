@@ -27,7 +27,7 @@ export const MURDER: AiPlayTemplate = {
 };
 
 export const STONE_RAIN: AiPlayTemplate = {
-  cardName: 'Stone rain',
+  cardName: 'Stone Rain',
   type: AiPlayType.Interaction,
   card: null,
   resolutionZone: TableZone.Graveyard,

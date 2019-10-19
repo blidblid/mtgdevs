@@ -168,6 +168,12 @@ export class AiService implements OnDestroy {
 
     const optimalPlay = playsForZone.reduce((acc, curr) => {
       const target = this.legalTargetWithHighestCmc(curr, cards);
+
+      if (!curr.card) {
+        console.warn(`AI tried to play ${curr.cardName}, but found no such card in magic.`); // tslint:disable-line
+        return acc;
+      }
+
       if (target) {
         const score = target.convertedManaCost / (curr.card.convertedManaCost || 1);
         if (!acc || score > acc.score) {
