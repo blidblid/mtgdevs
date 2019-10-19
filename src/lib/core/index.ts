@@ -1,6 +1,6 @@
 export * from './booster';
 export * from './card';
-export * from './fuzzy';
+export * from './search';
 export * from './icon-registry';
 export * from './material-overrides';
 export * from './math';

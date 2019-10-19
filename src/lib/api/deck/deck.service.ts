@@ -42,7 +42,7 @@ export class DeckService {
         return {
           deckKey: entry.key,
           name
-        }
+        };
       })
     );
   }

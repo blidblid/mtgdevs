@@ -4,7 +4,7 @@
     <!-- Card search. -->
     <mat-form-field class="app-deck-builder-card-filter">
       <mat-label>Card</mat-label>
-      <input [formControl]="filter"
+      <input [formControl]="filterFormControl"
              [matAutocomplete]="auto"
              #filterInput
              (keydown)="onKeydown($event)"

@@ -23,9 +23,7 @@ export class CardStoreBase {
   }
 
   add(card: Card | string, numberOf: number = 1): void {
-    while (numberOf--) {
-      this.cardActionSub.next({ action: Action.Add, card });
-    }
+    this.cardActionSub.next({ action: Action.Add, card, numberOf });
   }
 
   clear(): void {
@@ -45,7 +43,7 @@ export class CardStoreBase {
         switch (current.action) {
 
           case (Action.Add): {
-            return addToArray(current.card as Card, acc);
+            return addToArray(current.card as Card, acc, current.numberOf);
           }
 
           case (Action.Remove): {
@@ -62,21 +60,23 @@ export class CardStoreBase {
       }, [])
     );
 
-    this.cards$ = combineLatest(cards$, this.cardSorterService.getSortBy()).pipe(
+    this.cards$ = combineLatest([cards$, this.cardSorterService.getSortBy()]).pipe(
       map(([cards, sorter]) => sorter(cards)),
       shareReplay(1),
       startWith([])
-    )
+    );
   }
 
   private getCardFromAction(cardAction: CardAction): Observable<CardAction> {
     const action = cardAction.action;
     const card = cardAction.card;
+    const numberOf = cardAction.numberOf;
 
     if (typeof card !== 'string') {
       return of({
         action,
-        card
+        card,
+        numberOf
       });
     }
 
@@ -84,7 +84,8 @@ export class CardStoreBase {
       map(fetchedCard => {
         return {
           action,
-          card: fetchedCard
+          card: fetchedCard,
+          numberOf
         };
       })
     );

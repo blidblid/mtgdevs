@@ -30,9 +30,9 @@ export function updateInArray<T>(newValue: T, target: T, array: T[]): T[] {
   return arrayCopy;
 }
 
-export function addToArray<T>(toAdd: T, array: T[]): T[] {
+export function addToArray<T>(toAdd: T, array: T[], numberOf: number = 1): T[] {
   if (toAdd) {
-    return [...array, toAdd];
+    return [...array, ...Array(numberOf).fill(toAdd)];
   }
 
   return [...array];

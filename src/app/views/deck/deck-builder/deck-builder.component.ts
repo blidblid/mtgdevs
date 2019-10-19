@@ -1,4 +1,12 @@
-import { Component, OnInit, ViewEncapsulation, ChangeDetectionStrategy, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ElementRef,
+  OnDestroy
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BACKSPACE, ENTER, DELETE } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
@@ -12,7 +20,6 @@ import {
   withLatestFrom,
   distinctUntilChanged,
   auditTime,
-  debounceTime,
   filter
 } from 'rxjs/operators';
 
@@ -24,11 +31,12 @@ import {
   DictionaryService,
   DeckService
 } from '@mtg-devs/api';
-import { CardCountService, FuseJsService } from '@mtg-devs/core';
+import { CardCountService, FuseJsService, searchSubstring } from '@mtg-devs/core';
 
 import { DeckStoreService } from './deck-store.service';
 import { StoredDeckStoreService } from '../../limited/sealed/stored-deck-store.service';
 import { BottomComponent } from '../../../../lib/components/layout/bottom/bottom.component';
+import { FUZZY_SEARCH_THRESHOLD } from './deck-builder-model';
 
 
 @Component({
@@ -41,9 +49,9 @@ import { BottomComponent } from '../../../../lib/components/layout/bottom/bottom
     'class': 'app-deck-builder'
   }
 })
-export class DeckBuilderComponent implements OnInit {
+export class DeckBuilderComponent implements OnInit, OnDestroy {
 
-  filter: FormControl = new FormControl('');
+  filterFormControl: FormControl = new FormControl('');
   deckNameFormControl: FormControl = new FormControl('', Validators.required);
 
   autocompleteValues$: Observable<DictionaryEntry[]>;
@@ -77,7 +85,7 @@ export class DeckBuilderComponent implements OnInit {
   onOptionSelected(selection: MatAutocompleteSelectedEvent): void {
     this.deckStore.add(selection.option.value, this.cardCounter);
     this.lastCardName = selection.option.value;
-    Promise.resolve().then(() => this.filter.setValue('', { emitEvent: false }));
+    Promise.resolve().then(() => this.filterFormControl.setValue('', { emitEvent: false }));
   }
 
   onCardRemoved(card: Card): void {
@@ -85,7 +93,7 @@ export class DeckBuilderComponent implements OnInit {
   }
 
   onKeydown(event: KeyboardEvent): void {
-    if (this.filter.value !== '' || this.lastCardName === null) {
+    if (this.filterFormControl.value !== '' || this.lastCardName === null) {
       return;
     }
 
@@ -125,11 +133,12 @@ export class DeckBuilderComponent implements OnInit {
       map(dictionary => dictionary.cards)
     );
 
-    const filter$ = this.filter.valueChanges.pipe(startWith(''), map(filterBy => filterBy + ''));
+    const filter$ = this.filterFormControl.valueChanges.pipe(startWith(''), map(filterBy => filterBy + ''));
 
-    this.autocompleteValues$ = combineLatest(filter$, dictionary$).pipe(
-      debounceTime(250),
+    this.autocompleteValues$ = combineLatest([filter$, dictionary$]).pipe(
       map(([filterBy, dictionary]) => {
+        filterBy = filterBy.replace(/\d+/g, '').trim();
+
         if (!filterBy.match(/[a-zA-Z]/g)) {
           return [];
         }
@@ -138,16 +147,18 @@ export class DeckBuilderComponent implements OnInit {
           return dictionary;
         }
 
-        return this.fuse.search(filterBy, dictionary, ['name', 'type']);
+        return dictionary.length > FUZZY_SEARCH_THRESHOLD
+          ? searchSubstring(filterBy, dictionary)
+          : this.fuse.search(filterBy, dictionary, ['name', 'type']);
       }),
       map(cards => cards.slice(0, 5))
     );
   }
 
   private buildCardCounterObservable(): void {
-    // Have to do this with the native input element since the autocomplete sets filter value on OptionSelected.
+    // Do this with the native input element since the autocomplete sets filter value on OptionSelected.
     const cardCounter$ = fromEvent<Event>(this.filterInput.nativeElement, 'keypress').pipe(
-      map(input => (input.target as HTMLInputElement).value),
+      map(() => this.filterFormControl.value),
       map(filterBy => {
         if (!filterBy) {
           return 1;

@@ -13,6 +13,7 @@ export enum Action {
 export interface CardAction {
   action: Action;
   card?: Card | string;
+  numberOf?: number;
 }
 
 export interface StoreAction<T> {

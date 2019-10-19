@@ -131,26 +131,26 @@ export class PodService implements OnDestroy {
       share()
     );
 
-    this.activePod$ = combineLatest(podsWithPlayers$, this.activePodKeySub).pipe(
+    this.activePod$ = combineLatest([podsWithPlayers$, this.activePodKeySub]).pipe(
       map(([pods, podKey]) => (podKey && pods.find(pod => pod.key === podKey)) || null),
       shareReplay(1)
     );
 
-    this.podFilled$ = combineLatest(this.activePod$, this.activePlayerKeySub).pipe(
+    this.podFilled$ = combineLatest([this.activePod$, this.activePlayerKeySub]).pipe(
       filter(([activePod, playerKey]) => !!activePod && !!activePod.players && !!playerKey),
       map(([pod]) => pod),
       filter(pod => this.podIsFilled(pod)),
-      tap(() => console.log('DRAFT FILLED')),
+      tap(() => console.info('DRAFT FILLED')), // tslint:disable-line
       share()
     );
 
     this.podReady$ = this.podFilled$.pipe(
       filter(pod => this.playersHaveKeys(pod, [PLAYER_LEFT_KEY, PLAYER_RIGHT_KEY])),
       distinctUntilChanged((a, b) => a.key === b.key),
-      tap(() => console.log('DRAFT READY'))
+      tap(() => console.info('DRAFT READY')) // tslint:disable-line
     );
 
-    this.podScored$ = combineLatest(this.activePod$, this.activePlayerKeySub).pipe(
+    this.podScored$ = combineLatest([this.activePod$, this.activePlayerKeySub]).pipe(
       filter(([activePod, playerKey]) => this.playerHaveKeys(activePod, playerKey, ['score'])),
       map(([pod]) => {
         pod.players = pod.players.filter(player => player.score);
