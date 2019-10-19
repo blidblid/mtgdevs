@@ -1,4 +1,4 @@
-export const PLAINS_MULTIVERSEID = 401992
+export const PLAINS_MULTIVERSEID = 401992;
 export const ISLAND_MULTIVERSEID = 401927;
 export const SWAMP_MULTIVERSEID = 402058;
 export const MOUNTAIN_MULTIVERSEID = 401956;
@@ -19,7 +19,11 @@ export const INCLUDED_CARD_PROPERTIES = [
   'types',
   'rarity',
   'multiverseId',
-  'cacheTimeStamp'
+  'cacheTimeStamp',
+  'hasDeathtouch',
+  'hasFirstStrike',
+  'hasDoubleStrike',
+  'hasIndestructible'
 ];
 
 export const INCLUDED_SET_PROPERTIES = [

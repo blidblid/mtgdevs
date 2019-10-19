@@ -4,8 +4,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { map, switchMap, takeUntil, withLatestFrom, filter, share, scan, startWith, tap, shareReplay } from 'rxjs/operators';
 import { Observable, Subject, fromEvent, merge, combineLatest, BehaviorSubject } from 'rxjs';
 
-import { Card, StoredDeck, DeckService } from '@mtg-devs/api';
-import { CardFilterService, StoreBase, CardAnalyzeService } from '@mtg-devs/core';
+import { Card, StoredDeck, DeckService, TypesHelper } from '@mtg-devs/api';
+import { CardFilterService, StoreBase } from '@mtg-devs/core';
 import { TableZone, TableCardClicked, TableCardMoved, TableCardCounterChanged } from '@mtg-devs/components';
 
 import { PlayTestBattlefieldStore } from './store/play-test-battlefield-store';
@@ -88,7 +88,6 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     private cardFilter: CardFilterService,
     private storedDeckStore: StoredDeckStoreService,
     private deckService: DeckService,
-    private cardAnalyze: CardAnalyzeService,
     private ai: AiService,
     private aiPermanents: PlayTestAiPermanentStore,
     @Inject(PLAY_TEST_CLICK_HANDLER) private clickHandlers: PlayTestClickHandler[],
@@ -280,7 +279,7 @@ export class PlayTestComponent implements OnDestroy, OnInit {
     const addDefaults = (source: Observable<Card[]>, counter?: number) => {
       return source.pipe(map(cards => cards.map(card => {
         if (card.counter === undefined && counter !== undefined) {
-          card.counter = this.cardAnalyze.isPlaneswalker(card) ? parseInt(card.loyalty) : counter;
+          card.counter = TypesHelper.isPlaneswalker(card) ? parseInt(card.loyalty) : counter;
         } else if (counter === undefined) {
           card.counter = undefined;
         }

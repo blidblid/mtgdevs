@@ -97,9 +97,9 @@ export class DeckBuilderComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if ([BACKSPACE, DELETE].includes(event.keyCode)) {
+    if ([BACKSPACE, DELETE].includes(event.keyCode)) { // tslint:disable-line
       this.deckStore.remove(this.lastCardName);
-    } else if ([ENTER].includes(event.keyCode)) {
+    } else if ([ENTER].includes(event.keyCode)) { // tslint:disable-line
       this.deckStore.add(this.lastCardName);
     }
   }

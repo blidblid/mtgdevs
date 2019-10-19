@@ -122,7 +122,7 @@ export class AiService implements OnDestroy {
 
     this.cardOnStack$ = merge(this.responseSub, this.playCard$).pipe(
       map(response => (!response || typeof response === 'boolean') ? null : response.template.card),
-      startWith(null)
+      startWith(null as Card)
     );
 
     this.resolvedPlay$

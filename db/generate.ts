@@ -12,6 +12,7 @@ import {
 import { requestMtgJson, requestScryfall } from './download';
 import { removeInvalid, withoutKeyValue, minify, addKeyFromCards, buildDictionaries } from './util';
 import { CardSet, Card } from '../src/lib/api/card/card-model';
+import { decorateCard } from './decorate';
 
 
 (async function writeDataBase() {
@@ -21,7 +22,7 @@ import { CardSet, Card } from '../src/lib/api/card/card-model';
   const mtgJsonSet = await requestMtgJson('AllSets', downloadNew);
   const scryfallCards: Card[] = await requestScryfall(downloadNew);
   const mtgJsonCards: Card[] = Object.values(mtgJsonCard);
-  const mtgJsonSets: CardSet[] =  Object.values(mtgJsonSet);
+  const mtgJsonSets: CardSet[] = Object.values(mtgJsonSet);
   const mtgJsonSetCards: Card[] = mtgJsonSets.reduce((acc, curr) => [...acc, ...curr.cards], [] as Card[]);
   const score: any = JSON.parse(fs.readFileSync('./input/score.json', 'utf8'));
 
@@ -49,11 +50,17 @@ import { CardSet, Card } from '../src/lib/api/card/card-model';
     mountain: mtgJsonSetCards.find(card => card.multiverseId === MOUNTAIN_MULTIVERSEID),
     forest: mtgJsonSetCards.find(card => card.multiverseId === FOREST_MULTIVERSEID)
   };
+  const basics: Card[] = Object.values(basic) as Card[];
+
+  // Decorate with new properties.
+  mtgJsonCards.forEach(card => decorateCard(card));
+  mtgJsonSets.forEach(set => set.cards.forEach(card => decorateCard(card)));
+  basics.forEach(card => decorateCard(card));
 
   // Minify by removing unwanted properties.
   mtgJsonCards.forEach(card => minify(card, INCLUDED_CARD_PROPERTIES));
   mtgJsonSets.forEach(set => set.cards.forEach(card => minify(card, INCLUDED_CARD_PROPERTIES)));
-  Object.values(basic).forEach(card => minify(card, INCLUDED_CARD_PROPERTIES));
+  basics.forEach(card => minify(card, INCLUDED_CARD_PROPERTIES));
   mtgJsonSets.forEach(set => minify(set, INCLUDED_SET_PROPERTIES));
 
   // Add missing keys from other cards.

@@ -26,12 +26,12 @@ export interface Card {
   // Added by mtg-devs
   foil: boolean;
   cacheTimeStamp: string;
+  hasDeathtouch: boolean;
+  hasFirstStrike: boolean;
+  hasDoubleStrike: boolean;
+  hasIndestructible: boolean;
   counter?: number;
   tapped?: boolean;
-  hasDeathtouch?: boolean;
-  hasFirstStrike?: boolean;
-  hasDoubleStrike?: boolean;
-  hasIndestructible?: boolean;
 }
 
 export interface CardSet {

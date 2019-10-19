@@ -4,8 +4,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { filter, map, switchMap, startWith, takeUntil, take } from 'rxjs/operators';
 import { Observable, combineLatest, Subject } from 'rxjs';
 
-import { CardService, Card, CardSet } from '@mtg-devs/api';
-import { CardAnalyzeService, CardFilterService } from '@mtg-devs/core';
+import { CardService, Card } from '@mtg-devs/api';
+import { CardFilterService } from '@mtg-devs/core';
 import { CardDisplayComponent } from '@mtg-devs/components';
 
 import { LIMITED_AVAILABLE_SETS } from '../../limited/limited-model';
@@ -28,8 +28,6 @@ export class CombatComponent implements OnInit {
   setFormControl = new FormControl(null, Validators.required);
   cmcFormControl = new FormControl();
 
-  set$: Observable<CardSet>;
-  availableCards$: Observable<Card[]>;
   combatStats$: Observable<CombatStat[]>;
 
   dataSource = new MatTableDataSource();
@@ -44,12 +42,14 @@ export class CombatComponent implements OnInit {
     'lossPercentage'
   ];
 
+  private cards$: Observable<Card[]>;
+  private fightCards$: Observable<Card[]>;
+
   private destroySub = new Subject<void>();
 
   constructor(
     private cardService: CardService,
     private cardFilterService: CardFilterService,
-    private cardAnalyzeService: CardAnalyzeService,
     private zone: NgZone,
     private dialogService: MatDialog) {
   }
@@ -63,31 +63,31 @@ export class CombatComponent implements OnInit {
   }
 
   private buildSelectionObservables(): void {
-    this.set$ = this.setFormControl.valueChanges.pipe(
+    this.cards$ = this.setFormControl.valueChanges.pipe(
       filter(set => !!set),
-      switchMap(set => this.cardService.getSet(set))
+      switchMap(set => this.cardService.getSet(set)),
+      map(set => set.cards)
     );
 
-    const cmc$ = this.cmcFormControl.valueChanges.pipe(startWith(null));
+    const cmc$ = this.cmcFormControl.valueChanges.pipe(startWith(null as number));
 
-    const filteredCards$ = combineLatest(this.set$, cmc$).pipe(
-      map(([set, cmc]) => cmc ? this.cardFilterService.byConvertedManacost(set.cards, cmc) : set.cards)
+    const filteredCards$ = combineLatest([this.cards$, cmc$]).pipe(
+      map(([cards, cmc]) => cmc ? this.cardFilterService.byConvertedManacost(cards, cmc) : cards)
     );
 
-    this.availableCards$ = filteredCards$.pipe(
+    this.fightCards$ = filteredCards$.pipe(
       map(cards => {
         return cards.filter(card => {
           const power = parseInt(card.power);
           const toughness = parseInt(card.toughness);
           return [power, toughness].every(parsed => !isNaN(parsed) && typeof parsed === 'number') && toughness > 0;
         });
-      }),
-      map(cards => cards.map(card => this.cardAnalyzeService.decorateCard(card)))
+      })
     );
   }
 
   private buildCombatObservables(): void {
-    this.combatStats$ = this.availableCards$.pipe(
+    this.combatStats$ = this.fightCards$.pipe(
       map(cards => cards.map(card => this.getCombatStat(card, cards)))
     );
 
@@ -113,11 +113,11 @@ export class CombatComponent implements OnInit {
 
       switch (this.fightCards(card, curr)) {
         case (FightOutcome.Win):
-          return { ...acc, wins: [...acc.wins, curr] }
+          return { ...acc, wins: [...acc.wins, curr] };
         case (FightOutcome.Draw):
-          return { ...acc, draws: [...acc.draws, curr] }
+          return { ...acc, draws: [...acc.draws, curr] };
         case (FightOutcome.Loss):
-          return { ...acc, losses: [...acc.losses, curr] }
+          return { ...acc, losses: [...acc.losses, curr] };
       }
     }, initialCombatStats);
 
@@ -135,7 +135,7 @@ export class CombatComponent implements OnInit {
       winPercentage: 100 * numberOfWins / totalMatchups,
       drawPercentage: 100 * numberOfDraws / totalMatchups,
       lossPercentage: 100 * numberOfLosses / totalMatchups
-    }
+    };
   }
 
   private fightCards(card: Card, opponent: Card): FightOutcome {

@@ -1,3 +1,6 @@
+import { Card } from './card-model';
+
+
 export type Type = 'Artifact' | 'Creature' | 'Enchantment' | 'Instant' | 'Land' | 'Sorcery' | 'Planeswalker' | 'Tribal';
 
 const ALL_TYPES: Type[] = [
@@ -27,5 +30,9 @@ export class TypesHelper {
 
   static allExcept(expect: Type[]): Type[] {
     return ALL_TYPES.filter(type => !expect.includes(type));
+  }
+
+  static isPlaneswalker(card: Card): boolean {
+    return card.types.includes(this.planeswalker);
   }
 }
