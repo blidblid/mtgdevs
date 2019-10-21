@@ -21,6 +21,14 @@ $card-width: 223px;
   .app-top-container > *, .app-top-actions > * {
      + * {
       margin-left: 16px !important;
+
+      @media (max-width: 710px) {
+        margin-left: 8px !important;
+      }
+
+      @media (max-width: 510px) {
+        margin-left: 4px !important;
+      }
     }
   }
 

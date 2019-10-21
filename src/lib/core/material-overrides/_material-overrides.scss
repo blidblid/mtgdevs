@@ -1,5 +1,8 @@
 body {
-  .mat-h1, .mat-h2, .mat-h3, .mat-h4 {
+  .mat-h1,
+  .mat-h2,
+  .mat-h3,
+  .mat-h4 {
     margin: 0;
   }
 
@@ -9,5 +12,22 @@ body {
 
   .mat-option {
     text-transform: capitalize;
+  }
+
+  .mat-form-field {
+    width: 100%;
+    max-width: 180px;
+
+    .mat-form-field-infix {
+      width: auto;
+      min-width: 100px;
+    }
+
+    @media (max-width: 710px) {
+      .mat-form-field-infix {
+        width: auto;
+        min-width: 80px;
+      }
+    }
   }
 }

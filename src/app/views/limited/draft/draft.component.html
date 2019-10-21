@@ -23,8 +23,7 @@
           Drop
         </button>
         <ng-container *ngIf="!(scoredPod$ | async)">
-          <div class="positioned-element"
-               [matTooltip]="deckError$ | async">
+          <div [matTooltip]="deckError$ | async">
             <button mat-raised-button
                     color="primary"
                     [disabled]="!(finished$ | async) || !!(deckError$ | async)"

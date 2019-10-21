@@ -11,8 +11,7 @@
     </mat-form-field>
 
     <app-top-actions>
-      <div class="positioned-element"
-           [matTooltip]="deckError$ | async">
+      <div [matTooltip]="deckError$ | async">
         <button *ngIf="!(draftScored$ | async)"
                 mat-raised-button
                 [disabled]="!!(deckError$ | async)"
