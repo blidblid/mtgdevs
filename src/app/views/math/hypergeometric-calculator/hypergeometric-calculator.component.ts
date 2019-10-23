@@ -12,7 +12,10 @@ import { DisplayedHypergeomResult } from './hypergeometric-calculator-model';
   templateUrl: './hypergeometric-calculator.component.html',
   styleUrls: ['./hypergeometric-calculator.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    'class': 'app-hypergeometric-calculator'
+  }
 })
 export class HypergeometricCalculatorComponent implements OnInit {
 
@@ -37,8 +40,8 @@ export class HypergeometricCalculatorComponent implements OnInit {
       map(value => {
         const { hits, draws, deckSize } = value;
 
-        let cases = hits > draws ? draws : hits;
-        let results = [];
+        const cases = hits > draws ? draws : hits;
+        const results = [];
 
         for (let i = 0; i <= cases; i++) {
           results.push(this.math.toPercent(this.math.hypergeom(i, hits, draws, deckSize), 1));
@@ -47,11 +50,11 @@ export class HypergeometricCalculatorComponent implements OnInit {
         return results;
       }),
       shareReplay(1)
-    )
+    );
 
     this.validInput$ = results$.pipe(
       map(results => results.every(result => result >= 0 && ![NaN, Infinity, -Infinity].includes(result)))
-    )
+    );
 
     this.displayedResults$ = results$.pipe(
       map(results => this.mapToDisplayedResults(results))
@@ -60,15 +63,14 @@ export class HypergeometricCalculatorComponent implements OnInit {
 
   private mapToDisplayedResults(results: number[]): DisplayedHypergeomResult[] {
     let sum = 0;
-    let displayedResults: DisplayedHypergeomResult[] = [];
+    const displayedResults: DisplayedHypergeomResult[] = [];
 
-    // Add + hits.
     for (let i = 0; i < results.length; i++) {
       if (results[i] === 0 && results[i + 1] === 0 && sum > 0) {
         displayedResults.push({
           title: `${i}+ hits`,
           result: '0%',
-          titleWithSum: '',
+          titleWithSum: `${i}+ hits\n`,
           resultWithSum: `0%`
         });
         break;
@@ -76,15 +78,14 @@ export class HypergeometricCalculatorComponent implements OnInit {
         displayedResults.push({
           title: `${i} hit${i === 1 ? '' : 's'}`,
           result: `${results[i].toFixed(1)}%`,
-          titleWithSum: i === results.length - 1 ? '' : `${i} or more hits\n`,
-          resultWithSum: `${(100 - sum).toFixed(1)}%`
+          titleWithSum: `${i}+ hits\n`,
+          resultWithSum: `${Math.abs(100 - sum).toFixed(1)}%`
         });
       }
 
       sum += results[i];
     }
 
-    // Add - hits.
     sum = 0;
     for (let i = results.length - 1; i >= 0; i--) {
       if (results[i] === 0 && results[i - 1] === 0 && sum > 0) {

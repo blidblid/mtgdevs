@@ -1,4 +1,18 @@
-.app-hypergeometric-calculator-result-column {
-  display: flex;
-  flex-direction: column;
+.app-hypergeometric-calculator {
+  .app-hypergeometric-calculator-result-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .grid-component {
+    justify-items: center;
+  }
+
+  .app-middle {
+    flex-direction: column;
+
+    .mat-card + .mat-card {
+      margin-top: 16px;
+    }
+  }
 }

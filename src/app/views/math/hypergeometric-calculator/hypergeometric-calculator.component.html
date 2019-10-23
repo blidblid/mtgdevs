@@ -34,9 +34,15 @@
               flex>
     <mat-card class="grid-component">
       <div class="mat-h3 app-hypergeometric-calculator-result-column"
-           *ngFor="let displayedResult of displayedResults$ | async; let i = index"
-           [matTooltip]="displayedResult.titleWithSum + displayedResult.resultWithSum"
-           [matTooltipDisabled]="!displayedResult.titleWithSum">
+           *ngFor="let displayedResult of displayedResults$ | async">
+        <span>{{displayedResult.titleWithSum}}</span>
+        <span>{{displayedResult.resultWithSum}}</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="grid-component">
+      <div class="mat-h3 app-hypergeometric-calculator-result-column"
+           *ngFor="let displayedResult of displayedResults$ | async">
         <span>{{displayedResult.title}}</span>
         <span>{{displayedResult.result}}</span>
       </div>

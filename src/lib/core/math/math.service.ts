@@ -25,8 +25,7 @@ export class MathService {
 
   /** Calculate the hypergeometric distrubtion. */
   hypergeom(toGet: number, successes: number, drawn: number, population: number): number {
-    return (this.binom(successes, toGet) * this.binom(population - successes, drawn - toGet)) /
-      this.binom(population, drawn);
+    return (this.binom(successes, toGet) * this.binom(population - successes, drawn - toGet)) / this.binom(population, drawn);
   }
 
   /** Converts a normalized probability to percent with any given number of decimal points. */
