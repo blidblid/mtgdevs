@@ -7,3 +7,4 @@ export * from './math';
 export * from './page-not-found';
 export * from './shared-modules';
 export * from './state-management';
+export * from './queries';

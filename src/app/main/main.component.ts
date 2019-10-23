@@ -6,13 +6,15 @@ import {
   ViewEncapsulation,
   ChangeDetectionStrategy,
   ViewChild,
-  AfterContentInit
+  AfterContentInit,
+  OnDestroy
 } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
-import { map, filter, startWith, share, takeUntil } from 'rxjs/operators';
+import { map, filter, startWith, share, withLatestFrom } from 'rxjs/operators';
+
+import { IconRegistryService, BreakpointService } from '@mtg-devs/core';
 
 import {
   PLAY_MATS,
@@ -21,7 +23,6 @@ import {
   SideNavItemSubcategory,
   SIDE_NAV_ITEM
 } from './main-model';
-import { IconRegistryService } from '@mtg-devs/core';
 
 
 @Component({
@@ -34,24 +35,24 @@ import { IconRegistryService } from '@mtg-devs/core';
     '[class.app-sidenav-closed]': '!sidenav || !sidenav.opened'
   }
 })
-export class MainComponent implements AfterContentInit, OnInit {
+export class MainComponent implements AfterContentInit, OnInit, OnDestroy {
 
   backgroundUrl: string;
 
-  mobileQuery: MediaQueryList;
-  mobileQueryListener: () => void;
   @ViewChild(MatSidenav, { static: false }) sidenav: MatSidenav;
 
   subcategories: Subcategory[];
   activatedView$: Observable<string>;
+  breakpointMatches$: Observable<boolean>;
+  sidenavMode$: Observable<string>;
 
   private destroySub = new Subject<void>();
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef,
-    private media: MediaMatcher,
     private router: Router,
     private iconRegistry: IconRegistryService,
+    private breakpoint: BreakpointService,
     @Inject(SIDE_NAV_ITEM) private sideNavItems: SideNavItem[]
   ) {
     this.iconRegistry.registerDefaults();
@@ -88,18 +89,19 @@ export class MainComponent implements AfterContentInit, OnInit {
       share()
     );
 
+    this.breakpointMatches$ = this.breakpoint.getMatches();
+
     this.activatedView$
-      .subscribe(() => {
-        if (this.mobileQuery.matches && this.sidenav) {
+      .pipe(withLatestFrom(this.breakpointMatches$))
+      .subscribe(([, matches]) => {
+        if (matches && this.sidenav) {
           this.sidenav.close();
         }
       });
-  }
 
-  private setupMobileQueries(): void {
-    this.mobileQueryListener = () => this.changeDetectorRef.detectChanges();
-    this.mobileQuery = this.media.matchMedia('(max-width: 790px)');
-    this.mobileQuery.addListener(this.mobileQueryListener);
+    this.sidenavMode$ = this.breakpointMatches$.pipe(
+      map(matches => matches ? 'over' : 'side')
+    );
   }
 
   ngAfterContentInit(): void {
@@ -107,7 +109,6 @@ export class MainComponent implements AfterContentInit, OnInit {
   }
 
   ngOnInit() {
-    this.setupMobileQueries();
     this.setupNav();
     this.buildObservables();
     this.backgroundUrl = `url(${PLAY_MATS[Math.round(Math.random() * (PLAY_MATS.length)) - 1]})`;
@@ -116,6 +117,5 @@ export class MainComponent implements AfterContentInit, OnInit {
   ngOnDestroy(): void {
     this.destroySub.next();
     this.destroySub.complete();
-    this.mobileQuery.removeListener(this.mobileQueryListener);
   }
 }

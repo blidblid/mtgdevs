@@ -46,4 +46,10 @@ $layout-padding: 32px;
       }
     }
   }
+
+  &.app-layout-dense {
+    .app-top-card {
+      left: -$layout-padding;
+    }
+  }
 }

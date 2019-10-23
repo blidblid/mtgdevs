@@ -33,8 +33,8 @@
   <mat-sidenav class="mat-elevation-z12 app-main-sidenav"
                position="start"
                [opened]="true"
-               [mode]="mobileQuery.matches ? 'over' : 'side'"
-               [fixedInViewport]="mobileQuery.matches"
+               [mode]="sidenavMode$ | async"
+               [fixedInViewport]="breakpointMatches$ | async"
                [fixedBottomGap]="1"
                [fixedTopGap]="64">
 
