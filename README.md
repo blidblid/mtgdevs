@@ -12,7 +12,7 @@ mtgdevs is written in Angular with Firebase as a backend.
 
 
 ## mtgdevs contents
-* [@mtgdevs/api](https://github.com/blidblid/mtgdevs/tree/master/src/lib/api/readme.md)
-* [@mtgdevs/core](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/readme.md)
-* [@mtgdevs/components](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/readme.md)
-* [@mtgdevs/view](https://github.com/blidblid/mtgdevs/tree/master/src/app/views/readme.md)
+* [@mtgdevs/api](https://github.com/blidblid/mtgdevs/tree/master/src/lib/api/)
+* [@mtgdevs/core](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/)
+* [@mtgdevs/components](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/)
+* [@mtgdevs/view](https://github.com/blidblid/mtgdevs/tree/master/src/app/views/)
