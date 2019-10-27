@@ -1,17 +1,18 @@
-## Development server
+# mtgdevs
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+mtgdevs is an open-source project to collaborate on a progressive web app for all things Magic.
 
-## Code scaffolding
+mtgdevs is written in Angular with Firebase as a backend.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## To run mtgdevs locally
 
-## Build
+* Clone this repo.
+* Navigate to the cloned folder an run npm install.
+* Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
+## mtgdevs contents
+* [@mtgdevs/api](https://github.com/blidblid/mtgdevs/tree/master/src/lib/api/readme.md)
+* [@mtgdevs/core](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/readme.md)
+* [@mtgdevs/components](https://github.com/blidblid/mtgdevs/tree/master/src/lib/components/readme.md)
+* [@mtgdevs/view](https://github.com/blidblid/mtgdevs/tree/master/src/app/views/readme.md)
