@@ -12,7 +12,7 @@ import {
 import { Router, NavigationEnd } from '@angular/router';
 import { MatSidenav } from '@angular/material';
 import { Observable, Subject } from 'rxjs';
-import { map, filter, startWith, share, withLatestFrom } from 'rxjs/operators';
+import { map, filter, startWith, withLatestFrom, shareReplay } from 'rxjs/operators';
 
 import { IconRegistryService, BreakpointService } from '@mtg-devs/core';
 
@@ -86,7 +86,7 @@ export class MainComponent implements AfterContentInit, OnInit, OnDestroy {
         const segments = this.router.url.split('/');
         return segments.find(segment => this.sideNavItems.some(component => component.link === segment));
       }),
-      share()
+      shareReplay(1)
     );
 
     this.breakpointMatches$ = this.breakpoint.getMatches();

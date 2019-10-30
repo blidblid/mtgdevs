@@ -3,7 +3,7 @@ $layout-padding: 32px;
 
 .app-main-nav-list-item {
   .mat-icon {
-      margin-right: 8px;
+    margin-right: 8px;
   }
 }
 
@@ -39,7 +39,7 @@ $layout-padding: 32px;
     border-radius: 0;
 
     &:not(.mat-expanded) {
-        margin-bottom: -1px;
+      margin-bottom: -1px;
     }
   }
 
@@ -70,7 +70,8 @@ $layout-padding: 32px;
   min-width: $side-nav-width;
 }
 
-.mat-sidenav-container, .mat-sidenav-content {
+.mat-sidenav-container,
+.mat-sidenav-content {
   background: transparent;
 }
 

@@ -67,11 +67,12 @@ export class DeckDisplayComponent implements OnDestroy, OnInit {
   cardCountables = Object.keys(CardCountable);
 
   typeWithCounts$: Observable<TypeWithCount[]>;
-
   sideboard$: Observable<CardWithCount[]>;
 
   private countBySub = new BehaviorSubject<CardCountable>(CardCountable.Type);
   private reflowSub = new BehaviorSubject<null>(null);
+
+  trackBy = (index: number, item: Card) => item.name;
 
   constructor(private cardCountService: CardCountService) { }
 

@@ -7,8 +7,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['right.component.scss'],
   encapsulation: ViewEncapsulation.None,
   host: {
-    'class': 'app-right',
-    '[class.mat-elevation-z4]': 'true'
+    'class': 'app-right'
   }
 })
 export class RightComponent { }

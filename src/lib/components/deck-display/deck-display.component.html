@@ -20,7 +20,7 @@
   <div class="app-deck-display-type-container app-deck-display-sideboard"
        *ngIf="sideboard.length > 0">
     Sideboard ({{sideboard.length}})
-    <app-card-display *ngFor="let cardWithCount of sideboard"
+    <app-card-display *ngFor="let cardWithCount of sideboard; trackBy: trackBy"
                       [card]="cardWithCount.card"
                       [removable]="!disableRemoving"
                       [numberOf]="cardWithCount.numberOf"

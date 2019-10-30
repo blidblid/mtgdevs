@@ -1,16 +1,33 @@
 $size: 32px;
+$padding: 4px;
 
 .app-right {
   right: -$size;
-  padding: 4px;
-  top: 41%;
+  padding: $padding;
+  top: 104px;
+  bottom: 0;
   z-index: 1;
   display: flex;
   flex-direction: column;
   position: absolute;
+  justify-content: space-between;
   border-radius: 4px 0 0 4px;
 
   .app-counter + .app-counter {
     margin-top: 4px;
+  }
+
+  .app-right-info-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    position: absolute;
+    top: 0;
+    right: 0;
+    overflow: hidden;
+    padding: 16px 72px 16px 16px;
+    border-radius: 4px 0 0 4px;
+    z-index: -1;
+    width: 100%;
   }
 }

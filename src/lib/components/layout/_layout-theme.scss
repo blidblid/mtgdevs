@@ -8,7 +8,11 @@
     background: mat-color($primary);
   }
 
-  .app-right {
+  .app-right-counter-container {
+    background: mat-color($background, card);
+  }
+
+  .app-right-info-content {
     background: mat-color($background, card);
   }
 }

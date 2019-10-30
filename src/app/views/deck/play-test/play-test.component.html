@@ -114,6 +114,15 @@
   </app-middle>
 
   <app-right *ngIf="started$ | async">
+    <app-right-info>
+      <div>Here you can test the decks you have forked in the deck builder.</div>
+      <div>The AI will play spells of your choice, so select spells to tweak difficulty.</div>
+      <div>
+        All AI permanents will trigger automatically in the AI upkeep.
+        For example, an AI grizzly bear will deal 2 damage to you when you pass the turn
+      </div>
+    </app-right-info>
+
     <app-counter [icon]="opponentLifeIcon$ | async"
                  color="accent"
                  [class.app-play-test-active-opponent]="!(playerTurn$ | async)"
@@ -122,6 +131,7 @@
                  matTooltipPosition="left"
                  (counterChanged)="changeLife($event, false)">
     </app-counter>
+
     <app-counter [icon]="playerLifeIcon$ | async"
                  [class.app-play-test-active-player]="playerTurn$ | async"
                  [counter]="lifeSub | async"

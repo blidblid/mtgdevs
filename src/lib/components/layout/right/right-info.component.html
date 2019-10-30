@@ -1,0 +1,10 @@
+<button class="app-right-info-button"
+        mat-icon-button
+        (click)="infoOpen = !infoOpen">
+  <mat-icon>info</mat-icon>
+</button>
+
+<div class="app-right-info-content mat-elevation-z4"
+     [@expand]="infoOpen ? 'open' : 'closed'">
+  <ng-content></ng-content>
+</div>

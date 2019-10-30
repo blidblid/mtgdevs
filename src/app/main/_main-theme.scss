@@ -3,7 +3,7 @@
   $foreground: map-get($theme, foreground);
   $primary: map-get($theme, primary);
 
-  .app-main-nav-list-item {
+  .app-main-nav-list-item, .mat-expansion-panel-body {
     background: map-get($background, 'app-bar');
 
     &.app-main-nav-list-item-activated {

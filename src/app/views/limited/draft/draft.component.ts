@@ -116,7 +116,7 @@ export class DraftComponent extends LimitedBase {
   }
 
   private buildDraftInfoObservables(): void {
-    const draftedCards$ = combineLatest(this.mainDeck$, this.sideboard$, this.basics$).pipe(
+    const draftedCards$ = combineLatest([this.mainDeck$, this.sideboard$, this.basics$]).pipe(
       map(([mainDeck, sideboard, basics]) => [...mainDeck, ...sideboard].filter(card => !basics.includes(card))),
       shareReplay(1)
     );
@@ -189,7 +189,7 @@ export class DraftComponent extends LimitedBase {
       map(([[pick], cards]) => [cards.filter(card => card.name !== pick.name), cards])
     );
 
-    this.pods$ = combineLatest(this.podService.getPods(), set$).pipe(
+    this.pods$ = combineLatest([this.podService.getPods(), set$]).pipe(
       map(([pods, set]) => set ? pods.filter(pod => pod.set === set) : pods)
     );
 
@@ -230,7 +230,7 @@ export class DraftComponent extends LimitedBase {
   }
 
   private buildDisconnectObservables(): void {
-    combineLatest(this.draftPackQueueStoreService.get(), this.draftDirection$)
+    combineLatest([this.draftPackQueueStoreService.get(), this.draftDirection$])
       .pipe(takeUntil(this.destroySub))
       .subscribe(([boosters, forward]) => this.playService.updateDraftPackQueue(boosters, forward));
 

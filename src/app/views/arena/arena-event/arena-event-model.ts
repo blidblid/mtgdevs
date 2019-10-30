@@ -1,4 +1,4 @@
-import { InjectionToken } from "@angular/core";
+import { InjectionToken } from '@angular/core';
 
 export interface ArenaEvent {
   /** Name of the event. */
@@ -39,7 +39,7 @@ export interface DisplayResult {
   result: number[];
 }
 
-export type DisplayPayout = Payout & { name: string; }
+export type DisplayPayout = Payout & { name: string; };
 
 export interface Normalizer {
   goldPerGem: number;
@@ -63,7 +63,7 @@ function rareReward(uncommons: number = 0, rares: number = 0) {
 }
 
 function mythicReward(uncommons: number = 0, rares: number = 0) {
-  return uncommons * UNCOMMON_TO_MYTHIC_RATE + rares * RARE_TO_MYTHIC_RATE
+  return uncommons * UNCOMMON_TO_MYTHIC_RATE + rares * RARE_TO_MYTHIC_RATE;
 }
 
 export const ARENA_EVENT: InjectionToken<ArenaEvent> = new InjectionToken('Arena event.');
@@ -308,5 +308,7 @@ export const DRAFT_EVENT_GOLD: ArenaEvent = Object.assign({}, DRAFT_EVENT, { gem
 export const DRAFT_EVENT_GEMS: ArenaEvent = Object.assign({}, DRAFT_EVENT, { gold: 0, name: 'Draft (gems)' });
 export const CONSTRUCTED_EVENT_GOLD: ArenaEvent = Object.assign({}, CONSTRUCTED_EVENT, { gems: 0, name: 'Constructed (gold)' });
 export const CONSTRUCTED_EVENT_GEMS: ArenaEvent = Object.assign({}, CONSTRUCTED_EVENT, { gold: 0, name: 'Constructed (gems)' });
-export const TRADITIONAL_CONSTRUCTED_EVENT_GOLD: ArenaEvent = Object.assign({}, TRADITIONAL_CONSTRUCTED_EVENT, { gems: 0, name: 'Traditional Constructed (gold)' });
-export const TRADITIONAL_CONSTRUCTED_EVENT_GEMS: ArenaEvent = Object.assign({}, TRADITIONAL_CONSTRUCTED_EVENT, { gold: 0, name: 'Traditional Constructed (gems)' });
+export const TRADITIONAL_CONSTRUCTED_EVENT_GOLD: ArenaEvent =
+  Object.assign({}, TRADITIONAL_CONSTRUCTED_EVENT, { gems: 0, name: 'Traditional Constructed (gold)' });
+export const TRADITIONAL_CONSTRUCTED_EVENT_GEMS: ArenaEvent =
+  Object.assign({}, TRADITIONAL_CONSTRUCTED_EVENT, { gold: 0, name: 'Traditional Constructed (gems)' });

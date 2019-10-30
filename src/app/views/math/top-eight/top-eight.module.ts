@@ -15,7 +15,7 @@ const component: SideNavItem = {
   link: 'top-eight',
   icon: 'arrow_upward',
   subcategory: SideNavItemSubcategory.Math
-}
+};
 
 @NgModule({
   entryComponents: [

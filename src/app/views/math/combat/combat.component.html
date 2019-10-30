@@ -21,33 +21,43 @@
   </app-top>
 
   <app-middle *ngIf="(combatStats$ | async)">
-    <mat-table [dataSource]="dataSource" matSort #sort="matSort">
+    <mat-table [dataSource]="dataSource"
+               matSort
+               #sort="matSort">
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
-        <mat-cell *matCellDef="let outcome" (click)="onCardClick(outcome.card)"> {{outcome.card.name}} </mat-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Name </mat-header-cell>
+        <mat-cell *matCellDef="let outcome"
+                  (click)="onCardClick(outcome.card)"> {{outcome.card.name}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="numberOfWins">
-        <mat-header-cell *matHeaderCellDef  mat-sort-header> Wins </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Wins </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.numberOfWins}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="numberOfDraws">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Draws </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Draws </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.numberOfDraws}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="numberOfLosses">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Losses </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Losses </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.numberOfLosses}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="winPercentage">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Win (%) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Win (%) </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.winPercentage | number:'0.1-1'}}% </mat-cell>
       </ng-container>
       <ng-container matColumnDef="drawPercentage">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Draw (%) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Draw (%) </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.drawPercentage | number:'0.1-1'}}% </mat-cell>
       </ng-container>
       <ng-container matColumnDef="lossPercentage">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Loss (%) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef
+                         mat-sort-header> Loss (%) </mat-header-cell>
         <mat-cell *matCellDef="let outcome"> {{outcome.lossPercentage | number:'0.1-1'}}% </mat-cell>
       </ng-container>
 
@@ -55,4 +65,11 @@
       <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
     </mat-table>
   </app-middle>
+
+  <app-right>
+    <app-right-info>
+      <div>In limited, sometimes a Grizzly Bear is good rate. Other times a Hill Giant is better.</div>
+      <div>Here you can see how a creature lines up in limited combat.</div>
+    </app-right-info>
+  </app-right>
 </app-layout>

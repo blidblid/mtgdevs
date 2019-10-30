@@ -11,6 +11,7 @@ import { BottomToggleLeftDirective } from './bottom/bottom-toggle-left.component
 import { BottomToggleRightDirective } from './bottom/bottom-toggle-right.component';
 import { TopActionsComponent } from './top/top-actions.component';
 import { RightComponent } from './right/right.component';
+import { RightInfoComponent } from './right/right-info.component';
 
 
 const components = [
@@ -20,6 +21,7 @@ const components = [
   LayoutComponent,
   MiddleComponent,
   RightComponent,
+  RightInfoComponent,
   TopComponent,
   TopActionsComponent
 ];

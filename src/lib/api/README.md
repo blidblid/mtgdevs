@@ -2,7 +2,7 @@
 This is the entry point to the Firebase backend used to fetch for example cards and sets. Every entity is exposed as an Observable.
 
 ## Card
-The card API fetches data from Firebase using the card name as an identifyer. To get for example Shock into your component, inject `CardService` and use it to call `cardService.getCard('Shock')`. Similarly, you can get fetch sets using the set-code `cardService.getCard('ktk')`.
+The card API fetches data from Firebase using the card name as an identifyer. To get for example Shock into your component, inject `CardService` and use it to call `cardService.getCard('Shock')`. Similarly, you can get fetch sets using the set-code `cardService.getSet('ktk')`.
 
 ## Dictionaries
 To simplify card search mtgdevs creates dictionaries of all cards. They are loaded via `DictionaryService`.

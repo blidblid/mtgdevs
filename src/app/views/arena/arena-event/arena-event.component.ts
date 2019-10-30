@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Inject, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Inject, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSort, MatTableDataSource } from '@angular/material';
 import { Observable, combineLatest, Subject } from 'rxjs';
 import { map, share, startWith, filter, shareReplay, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
 
 import { ARENA_EVENT, ArenaEvent, Payout, DisplayResult, DisplayPayout, Normalizer } from './arena-event-model';
-import { NORMALIZE_ANIMATION } from './arena-event-animations';
 
 
 @Component({
@@ -16,10 +15,9 @@ import { NORMALIZE_ANIMATION } from './arena-event-animations';
   encapsulation: ViewEncapsulation.None,
   host: {
     'class': 'app-arena-event'
-  },
-  animations: NORMALIZE_ANIMATION
+  }
 })
-export class ArenaEventComponent implements OnInit {
+export class ArenaEventComponent implements OnInit, OnDestroy {
 
   @ViewChild('sort', { static: true }) sort: MatSort;
   dataSource: MatTableDataSource<DisplayPayout> = new MatTableDataSource<DisplayPayout>();
@@ -71,11 +69,11 @@ export class ArenaEventComponent implements OnInit {
         return {
           name: arenaEvent.name,
           result: this.eventResult(arenaEvent.losses, arenaEvent.wins, winPercentage / 100, arenaEvent.bestOfThree)
-        }
+        };
       }))
     );
 
-    this.expectedPayout$ = combineLatest(displayedResults$, normalizer$).pipe(
+    this.expectedPayout$ = combineLatest([displayedResults$, normalizer$]).pipe(
       map(([displayedResults, normalizer]) => this.resultToPayout(displayedResults, normalizer))
     );
   }
