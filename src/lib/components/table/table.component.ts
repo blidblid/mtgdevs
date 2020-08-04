@@ -9,7 +9,7 @@ import {
   ViewChild,
   ChangeDetectorRef
 } from '@angular/core';
-import { MatExpansionPanel } from '@angular/material';
+import { MatExpansionPanel } from '@angular/material/expansion';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 
 import { Card } from '@mtg-devs/api';
@@ -67,7 +67,7 @@ export class TableComponent implements OnInit {
   @ViewChild('graveyardExpansion', { static: true }) graveyardExpansion: MatExpansionPanel;
   @ViewChild('libraryExpansion', { static: true }) libraryExpansion: MatExpansionPanel;
 
-  previewAsImage: boolean = false;
+  previewAsImage = false;
 
   // For AoT typechecks in templates
   exileZone = TableZone.Exile;

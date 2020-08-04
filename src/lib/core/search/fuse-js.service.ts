@@ -4,7 +4,7 @@ import * as Fuse from 'fuse.js';
 
 
 @Injectable({ providedIn: 'root' })
-export class FuseJsService<T> {
+export class FuseJsService<T = any, O = any> {
 
   private fuseOptions = {
     shouldSort: true,
@@ -15,17 +15,17 @@ export class FuseJsService<T> {
     minMatchCharLength: 1
   };
 
-  private fuse: Fuse<T>;
+  private fuse: Fuse<T, O>;
   private previousDictionaryLength: number;
 
   search(searchFor: string, list: T[], keys: (keyof T)[]): T[] {
     const fuse = this.getFuse(list, keys);
     this.updateCollection(list);
 
-    return fuse.search(searchFor);
+    return fuse.search(searchFor) as any;
   }
 
-  private getFuse(list: T[], keys: (keyof T)[]): Fuse<T> {
+  private getFuse(list: T[], keys: (keyof T)[]): Fuse<T, O> {
     if (this.fuse) {
       return this.fuse;
     }

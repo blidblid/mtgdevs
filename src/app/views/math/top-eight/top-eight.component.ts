@@ -8,7 +8,8 @@ import {
   ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 

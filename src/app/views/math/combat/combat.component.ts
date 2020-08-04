@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, NgZone, ViewEncapsulation } from '@angular/core';
-import { MatTableDataSource, MatSort, MatDialog } from '@angular/material';
+import { MatTableDataSource} from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSort } from '@angular/material/sort';
 import { FormControl, Validators } from '@angular/forms';
 import { filter, map, switchMap, startWith, takeUntil, take } from 'rxjs/operators';
 import { Observable, combineLatest, Subject } from 'rxjs';

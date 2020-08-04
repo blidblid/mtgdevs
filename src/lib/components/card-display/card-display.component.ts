@@ -8,7 +8,7 @@ import {
   EventEmitter,
   ChangeDetectorRef
 } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 import { Card } from '@mtg-devs/api';

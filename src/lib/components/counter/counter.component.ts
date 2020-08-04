@@ -1,5 +1,6 @@
 import { Component, Input, ViewEncapsulation, Output, EventEmitter, ViewChild } from '@angular/core';
-import { ThemePalette, MatButton } from '@angular/material';
+import { MatButton } from '@angular/material/button';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-counter',

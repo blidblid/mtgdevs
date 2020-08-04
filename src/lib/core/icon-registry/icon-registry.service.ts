@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 import { RegisteredIcon } from './icon-registry-model';
@@ -22,6 +22,6 @@ export class IconRegistryService {
   }
 
   private createIconResource(name: string): RegisteredIcon {
-    return { name, url: `../../assets/${name}.svg` }
+    return { name, url: `../../assets/${name}.svg` };
   }
 }

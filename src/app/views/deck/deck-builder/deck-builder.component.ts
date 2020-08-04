@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { BACKSPACE, ENTER, DELETE } from '@angular/cdk/keycodes';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, Subject, fromEvent, merge } from 'rxjs';
 import {

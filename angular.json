@@ -17,6 +17,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "firebase",
+              "firebase/app",
+              "@firebase/app",
+              "@firebase/database",
+              "@firebase/firestore",
+              "@firebase/functions",
+              "@firebase/performance",
+              "@firebase/util",
+              "@firebase/remote-config"
+            ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -135,5 +146,8 @@
       }
     }
   },
-  "defaultProject": "open-mtg"
+  "defaultProject": "open-mtg",
+  "cli": {
+    "analytics": false
+  }
 }

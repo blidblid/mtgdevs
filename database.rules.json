@@ -1,14 +1,21 @@
 {
   "rules": {
-    ".read": true,
+    ".read": false,
     ".write": false,
-    "pod": {
-      ".write": true
-    },
-    "play": {
+    "db": {
+      ".read": true,
       ".write": true
     },
     "deck": {
+      ".read": true,
+      ".write": true
+    },
+    "play": {
+      ".read": true,
+      ".write": true
+    },
+    "pod": {
+      ".read": true,
       ".write": true
     }
   }

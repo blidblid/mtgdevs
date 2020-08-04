@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Inject, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSort, MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import { Observable, combineLatest, Subject } from 'rxjs';
 import { map, share, startWith, filter, shareReplay, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
 
