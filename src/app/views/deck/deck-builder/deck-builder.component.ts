@@ -216,7 +216,7 @@ export class DeckBuilderComponent implements OnInit, OnDestroy {
   }
 
   private navigateToDeck(deckKey: string): void {
-    this.router.navigateByUrl(`main/deck-builder/${deckKey}`);
+    this.router.navigateByUrl(`deck-builder/${deckKey}`);
   }
 
   private navigateToStart(): void {

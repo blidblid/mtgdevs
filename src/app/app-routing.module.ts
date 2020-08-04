@@ -10,11 +10,6 @@ import { SIDE_NAV_ITEM, SideNavItem } from './main/main-model';
 const routes: Route[] = [
   {
     path: '',
-    redirectTo: 'main',
-    pathMatch: 'full'
-  },
-  {
-    path: 'main',
     component: MainComponent,
     children: []
   },
@@ -27,7 +22,10 @@ const routes: Route[] = [
 })
 export class AppRoutingModule {
 
-  constructor(@Inject(SIDE_NAV_ITEM) private components: SideNavItem[], private router: Router) {
+  constructor(
+    @Inject(SIDE_NAV_ITEM) private components: SideNavItem[],
+    private router: Router
+  ) {
     this.buildRouterConfig();
   }
 
@@ -46,8 +44,7 @@ export class AppRoutingModule {
       };
     });
 
-    routes.find(route => route.path === 'main').children = [...childRoutes, ...childRoutesWithParam];
-
+    routes[0].children = [...childRoutes, ...childRoutesWithParam];
     this.router.resetConfig(routes);
   }
 }

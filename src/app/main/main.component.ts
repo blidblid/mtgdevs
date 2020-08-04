@@ -42,7 +42,6 @@ export class MainComponent implements AfterContentInit, OnInit, OnDestroy {
   @ViewChild(MatSidenav, { static: false }) sidenav: MatSidenav;
 
   subcategories: Subcategory[];
-  activatedView$: Observable<string>;
   breakpointMatches$: Observable<boolean>;
   sidenavMode$: Observable<string>;
 
@@ -79,25 +78,7 @@ export class MainComponent implements AfterContentInit, OnInit, OnDestroy {
   }
 
   private buildObservables(): void {
-    this.activatedView$ = this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
-      startWith(this.router.url),
-      map(() => {
-        const segments = this.router.url.split('/');
-        return segments.find(segment => this.sideNavItems.some(component => component.link === segment));
-      }),
-      shareReplay(1)
-    );
-
     this.breakpointMatches$ = this.breakpoint.getMatches();
-
-    this.activatedView$
-      .pipe(withLatestFrom(this.breakpointMatches$))
-      .subscribe(([, matches]) => {
-        if (matches && this.sidenav) {
-          this.sidenav.close();
-        }
-      });
 
     this.sidenavMode$ = this.breakpointMatches$.pipe(
       map(matches => matches ? 'over' : 'side')

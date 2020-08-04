@@ -9,7 +9,7 @@
   <a class="app-main-logo"
      mat-flat-button
      color="primary"
-     routerLink="/main">
+     routerLink="">
     mtgdevs
   </a>
 
@@ -41,9 +41,10 @@
       </mat-expansion-panel-header>
 
       <mat-nav-list>
-        <a mat-list-item
-           [ngClass]="{'app-main-nav-list-item': true, 'app-main-nav-list-item-activated': (activatedView$ | async) === component.link}"
+        <a class="app-main-nav-list-item"
+           mat-list-item
            *ngFor="let component of subcategory.components"
+           routerLinkActive="app-main-nav-list-item-activated"
            [routerLink]="component.link">
           <mat-icon> {{component.icon}} </mat-icon>
           {{ component.name }}
