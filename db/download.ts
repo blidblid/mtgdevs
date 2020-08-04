@@ -28,18 +28,24 @@ export async function requestScryfall(download: boolean) {
   const options = {
     method: `GET`,
     json: true,
-    uri: `https://archive.scryfall.com/json/scryfall-oracle-cards.json`,
+    uri: `https://api.scryfall.com/bulk-data`,
   };
 
   if (download) {
     try {
-      const response = await request(options);
+      const bulkDataMetadata = await request(options);
+      const oracleCards = await request(({
+        ...options,
+        uri: bulkDataMetadata.data.find(d => d.type === 'oracle_cards').download_uri
+      }));
+
       fs.writeFile(
         `./input/scryfall.json`,
-        JSON.stringify(response),
+        JSON.stringify(oracleCards),
         () => console.log(`Successfully downloaded scryfall.json from scryfall.com`)
       );
-      return response;
+
+      return oracleCards;
     } catch (error) { return Promise.reject(error); }
   } else {
     return JSON.parse(fs.readFileSync(`./input/scryfall.json`, 'utf8'));
