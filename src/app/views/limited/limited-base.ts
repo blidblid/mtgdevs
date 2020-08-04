@@ -1,4 +1,5 @@
 import { FormControl, Validators } from '@angular/forms';
+import { Directive } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 
 import { Card } from '@mtg-devs/api';
@@ -11,7 +12,8 @@ import {
 } from './limited-model';
 
 
-export abstract class LimitedBase {
+@Directive({})
+export abstract class LimitedBase { // tslint:disable-line
 
   availableSets = LIMITED_AVAILABLE_SETS;
 
