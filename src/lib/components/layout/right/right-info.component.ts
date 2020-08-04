@@ -8,7 +8,7 @@ import { EXPAND_ANIMATION } from './right-animations';
   encapsulation: ViewEncapsulation.None,
   animations: [EXPAND_ANIMATION],
   host: {
-    'class': 'app-right-info'
+    'class': 'app-right-info mat-caption'
   }
 })
 export class RightInfoComponent {
