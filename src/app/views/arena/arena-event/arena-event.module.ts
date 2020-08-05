@@ -24,7 +24,7 @@ const component: SideNavItem = {
   component: ArenaEventComponent,
   link: 'arena-event',
   icon: 'attach_money',
-  subcategory: SideNavItemSubcategory.Arena
+  subcategory: SideNavItemSubcategory.Math
 };
 
 @NgModule({

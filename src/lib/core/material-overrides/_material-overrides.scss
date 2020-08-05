@@ -14,6 +14,10 @@ body {
     text-transform: capitalize;
   }
 
+  .mat-list-item-content {
+    font-size: 15px;
+  }
+
   .mat-form-field {
     width: 100%;
     max-width: 180px;

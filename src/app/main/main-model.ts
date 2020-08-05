@@ -14,8 +14,7 @@ export interface SideNavItem {
 
 export enum SideNavItemSubcategory {
   Limited,
-  Arena,
-  Deck,
+  Constructed,
   Math
 }
 

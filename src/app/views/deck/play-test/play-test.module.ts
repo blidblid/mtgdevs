@@ -18,7 +18,7 @@ const component: SideNavItem = {
   component: PlayTestComponent,
   link: 'play-test',
   icon: 'android',
-  subcategory: SideNavItemSubcategory.Deck
+  subcategory: SideNavItemSubcategory.Constructed
 };
 
 @NgModule({

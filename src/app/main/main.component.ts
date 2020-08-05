@@ -66,11 +66,8 @@ export class MainComponent implements AfterContentInit, OnInit, OnDestroy {
       name: 'Limited',
       components: this.sideNavItems.filter(c => c.subcategory === SideNavItemSubcategory.Limited)
     }, {
-      name: 'Arena',
-      components: this.sideNavItems.filter(c => c.subcategory === SideNavItemSubcategory.Arena)
-    }, {
-      name: 'Deck',
-      components: this.sideNavItems.filter(c => c.subcategory === SideNavItemSubcategory.Deck)
+      name: 'Constructed',
+      components: this.sideNavItems.filter(c => c.subcategory === SideNavItemSubcategory.Constructed)
     }, {
       name: 'Math',
       components: this.sideNavItems.filter(c => c.subcategory === SideNavItemSubcategory.Math)

@@ -14,7 +14,7 @@ const component: SideNavItem = {
   component: DeckBuilderComponent,
   link: 'deck-builder',
   icon: 'add',
-  subcategory: SideNavItemSubcategory.Deck
+  subcategory: SideNavItemSubcategory.Constructed
 };
 
 @NgModule({
