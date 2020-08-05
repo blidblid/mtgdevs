@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { MainComponent } from './main.component';
-import { environment } from '../../environments/environment';
 import { MaterialSharedModule } from 'lib/core/shared-modules';
 import { ArenaEventsModule } from '../views/arena/arena-event/arena-event.module';
 import { CombatModule } from '../views/math/combat/combat.module';
@@ -16,6 +15,7 @@ import { PlayTestModule } from '../views/deck/play-test/play-test.module';
 
 const views = [
   ArenaEventsModule,
+  DraftModule,
   CombatModule,
   DeckBuilderModule,
   HypergeometricCalculatorModule,
@@ -24,15 +24,12 @@ const views = [
   TopEightModule
 ];
 
-const developingViews = environment.production ? [] : [DraftModule];
-
 @NgModule({
   imports: [
     CommonModule,
     MaterialSharedModule,
     RouterModule,
-    ...views,
-    ...developingViews
+    ...views
   ],
   declarations: [
     MainComponent,

@@ -21,6 +21,7 @@
               "firebase",
               "firebase/app",
               "@firebase/app",
+              "@firebase/component",
               "@firebase/database",
               "@firebase/firestore",
               "@firebase/functions",
