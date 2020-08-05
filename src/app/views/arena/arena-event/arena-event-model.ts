@@ -68,8 +68,8 @@ function mythicReward(uncommons: number = 0, rares: number = 0) {
 
 export const ARENA_EVENT: InjectionToken<ArenaEvent> = new InjectionToken('Arena event.');
 
-const DRAFT_EVENT: ArenaEvent = {
-  name: 'Draft',
+const QUICK_DRAFT_EVENT: ArenaEvent = {
+  name: 'Quick Draft',
   bestOfThree: false,
   gold: 5000,
   gems: 750,
@@ -200,37 +200,51 @@ export const CONSTRUCTED_EVENT: ArenaEvent = {
   }]
 };
 
-export const TRADITIONAL_DRAFT_EVENT: ArenaEvent = {
-  name: 'Traditional Draft',
+export const PREMIER_DRAFT_EVENT: ArenaEvent = {
+  name: 'Premier Draft',
   bestOfThree: true,
-  gold: 0,
+  gold: 10000,
   gems: 1500,
-  losses: 2,
-  wins: 5,
+  losses: 3,
+  wins: 7,
   payouts: [{
     gold: 0,
-    gems: 0,
+    gems: 50,
     packs: 1,
     uncommons: 0,
     rares: 0,
     mythics: 0
   }, {
     gold: 0,
-    gems: 0,
+    gems: 100,
+    packs: 1,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }, {
+    gold: 0,
+    gems: 250,
     packs: 2,
     uncommons: 0,
     rares: 0,
     mythics: 0
   }, {
     gold: 0,
-    gems: 800,
+    gems: 1000,
+    packs: 2,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }, {
+    gold: 0,
+    gems: 1400,
     packs: 3,
     uncommons: 0,
     rares: 0,
     mythics: 0
   }, {
     gold: 0,
-    gems: 1500,
+    gems: 1600,
     packs: 4,
     uncommons: 0,
     rares: 0,
@@ -244,7 +258,45 @@ export const TRADITIONAL_DRAFT_EVENT: ArenaEvent = {
     mythics: 0
   }, {
     gold: 0,
-    gems: 2100,
+    gems: 2200,
+    packs: 6,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }]
+};
+
+export const TRADITIONAL_DRAFT_EVENT: ArenaEvent = {
+  name: 'Traditional Draft',
+  bestOfThree: true,
+  gold: 10000,
+  gems: 1500,
+  losses: 0,
+  wins: 3,
+  payouts: [{
+    gold: 0,
+    gems: 0,
+    packs: 1,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }, {
+    gold: 0,
+    gems: 0,
+    packs: 1,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }, {
+    gold: 0,
+    gems: 1000,
+    packs: 4,
+    uncommons: 0,
+    rares: 0,
+    mythics: 0
+  }, {
+    gold: 0,
+    gems: 3000,
     packs: 6,
     uncommons: 0,
     rares: 0,
@@ -292,8 +344,8 @@ export const TRADITIONAL_CONSTRUCTED_EVENT: ArenaEvent = {
     gems: 0,
     packs: 0,
     uncommons: uncommonReward(1),
-    rares: rareReward(1, 2),
-    mythics: mythicReward(1, 2)
+    rares: rareReward(2, 1),
+    mythics: mythicReward(2, 1)
   }, {
     gold: 2100,
     gems: 0,
@@ -304,10 +356,22 @@ export const TRADITIONAL_CONSTRUCTED_EVENT: ArenaEvent = {
   }]
 };
 
-export const DRAFT_EVENT_GOLD: ArenaEvent = Object.assign({}, DRAFT_EVENT, { gems: 0, name: 'Draft (gold)' });
-export const DRAFT_EVENT_GEMS: ArenaEvent = Object.assign({}, DRAFT_EVENT, { gold: 0, name: 'Draft (gems)' });
+export const DRAFT_EVENT_GOLD: ArenaEvent = Object.assign({}, QUICK_DRAFT_EVENT, { gems: 0, name: 'Quick Draft (gold)' });
+export const DRAFT_EVENT_GEMS: ArenaEvent = Object.assign({}, QUICK_DRAFT_EVENT, { gold: 0, name: 'Quick Draft (gems)' });
+
+export const PREMIER_DRAFT_EVENT_GOLD: ArenaEvent =
+  Object.assign({}, PREMIER_DRAFT_EVENT, { gems: 0, name: 'Premier Draft (gold)' });
+export const PREMIER_DRAFT_EVENT_GEMS: ArenaEvent =
+  Object.assign({}, PREMIER_DRAFT_EVENT, { gold: 0, name: 'Premier Draft (gems)' });
+
+export const TRADITIONAL_DRAFT_EVENT_GOLD: ArenaEvent =
+  Object.assign({}, TRADITIONAL_DRAFT_EVENT, { gems: 0, name: 'Traditional Draft (gold)' });
+export const TRADITIONAL_DRAFT_EVENT_GEMS: ArenaEvent =
+  Object.assign({}, TRADITIONAL_DRAFT_EVENT, { gold: 0, name: 'Traditional Draft (gems)' });
+
 export const CONSTRUCTED_EVENT_GOLD: ArenaEvent = Object.assign({}, CONSTRUCTED_EVENT, { gems: 0, name: 'Constructed (gold)' });
 export const CONSTRUCTED_EVENT_GEMS: ArenaEvent = Object.assign({}, CONSTRUCTED_EVENT, { gold: 0, name: 'Constructed (gems)' });
+
 export const TRADITIONAL_CONSTRUCTED_EVENT_GOLD: ArenaEvent =
   Object.assign({}, TRADITIONAL_CONSTRUCTED_EVENT, { gems: 0, name: 'Traditional Constructed (gold)' });
 export const TRADITIONAL_CONSTRUCTED_EVENT_GEMS: ArenaEvent =

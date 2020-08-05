@@ -14,7 +14,7 @@ import { AI_PERMANENTS } from './ai/cards/ai-permament';
 
 
 const component: SideNavItem = {
-  name: 'Play test',
+  name: 'Play Test',
   component: PlayTestComponent,
   link: 'play-test',
   icon: 'android',

@@ -127,7 +127,7 @@ export class SealedComponent extends LimitedBase {
 
     this.setFormControl.valueChanges
       .pipe(takeUntil(this.destroySub))
-      .subscribe(value => this.router.navigate([`/main/sealed/${value}`]));
+      .subscribe(value => this.router.navigate([`sealed/${value}`]));
 
     this.score$ = this.sealedScoreStoreService.get();
   }

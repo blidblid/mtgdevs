@@ -3,7 +3,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { Observable, combineLatest, Subject } from 'rxjs';
-import { map, share, startWith, filter, shareReplay, distinctUntilChanged, tap, takeUntil } from 'rxjs/operators';
+import { map, share, startWith, filter, shareReplay, distinctUntilChanged, tap, takeUntil, debounceTime } from 'rxjs/operators';
+
+import { toBestOfThreeWinPercent, probabilityMassFunction } from '@mtg-devs/core';
 
 import { ARENA_EVENT, ArenaEvent, Payout, DisplayResult, DisplayPayout, Normalizer } from './arena-event-model';
 
@@ -66,10 +68,14 @@ export class ArenaEventComponent implements OnInit, OnDestroy {
     );
 
     const displayedResults$ = winPercentage$.pipe(
+      debounceTime(0),
       map(winPercentage => this.arenaEvents.map(arenaEvent => {
+        const probability = winPercentage / 100;
         return {
           name: arenaEvent.name,
-          result: this.eventResult(arenaEvent.losses, arenaEvent.wins, winPercentage / 100, arenaEvent.bestOfThree)
+          result: arenaEvent.losses > 0
+            ? this.eventResult(arenaEvent.losses, arenaEvent.wins, probability, arenaEvent.bestOfThree)
+            : this.traditionalEventResult(arenaEvent.wins, probability, arenaEvent.bestOfThree)
         };
       }))
     );
@@ -133,9 +139,7 @@ export class ArenaEventComponent implements OnInit, OnDestroy {
   /** Gets the expected result distribution for an event with max losses and max wins, given a win probability. */
   private eventResult(losses: number, wins: number, probability: number, bestOfThree: boolean): number[] {
     // Account for best of three.
-    probability = bestOfThree
-      ? Math.pow(probability, 2) + 2 * Math.pow(probability, 2) * (1 - probability)
-      : probability;
+    probability = bestOfThree ? toBestOfThreeWinPercent(probability) : probability;
 
     // Result matrix.
     const result: number[][] = [];
@@ -184,6 +188,12 @@ export class ArenaEventComponent implements OnInit, OnDestroy {
     }
 
     return endResult;
+  }
+
+  /** Gets the expected result distribution for an event with fixed rounds, given a win probability. */
+  private traditionalEventResult(rounds: number, probability: number, bestOfThree: boolean): number[] {
+    probability = bestOfThree ? toBestOfThreeWinPercent(probability) : probability;
+    return Array(rounds + 1).fill(0).map((value, index) => probabilityMassFunction(rounds, index, probability));
   }
 
   private buildDataSource(): void {

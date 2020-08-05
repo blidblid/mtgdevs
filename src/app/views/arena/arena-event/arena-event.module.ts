@@ -13,14 +13,17 @@ import {
   DRAFT_EVENT_GEMS,
   CONSTRUCTED_EVENT_GOLD,
   CONSTRUCTED_EVENT_GEMS,
-  TRADITIONAL_DRAFT_EVENT,
+  PREMIER_DRAFT_EVENT_GOLD,
+  PREMIER_DRAFT_EVENT_GEMS,
   TRADITIONAL_CONSTRUCTED_EVENT_GEMS,
-  TRADITIONAL_CONSTRUCTED_EVENT_GOLD
+  TRADITIONAL_CONSTRUCTED_EVENT_GOLD,
+  TRADITIONAL_DRAFT_EVENT_GEMS,
+  TRADITIONAL_DRAFT_EVENT_GOLD
 } from './arena-event-model';
 
 
 const component: SideNavItem = {
-  name: 'Event Value',
+  name: 'Arena Event Value',
   component: ArenaEventComponent,
   link: 'arena-event',
   icon: 'attach_money',
@@ -44,9 +47,12 @@ const component: SideNavItem = {
     { provide: SIDE_NAV_ITEM, useValue: component, multi: true },
     { provide: ARENA_EVENT, useValue: DRAFT_EVENT_GOLD, multi: true },
     { provide: ARENA_EVENT, useValue: DRAFT_EVENT_GEMS, multi: true },
+    { provide: ARENA_EVENT, useValue: PREMIER_DRAFT_EVENT_GOLD, multi: true },
+    { provide: ARENA_EVENT, useValue: PREMIER_DRAFT_EVENT_GEMS, multi: true },
+    { provide: ARENA_EVENT, useValue: TRADITIONAL_DRAFT_EVENT_GOLD, multi: true },
+    { provide: ARENA_EVENT, useValue: TRADITIONAL_DRAFT_EVENT_GEMS, multi: true },
     { provide: ARENA_EVENT, useValue: CONSTRUCTED_EVENT_GOLD, multi: true },
     { provide: ARENA_EVENT, useValue: CONSTRUCTED_EVENT_GEMS, multi: true },
-    { provide: ARENA_EVENT, useValue: TRADITIONAL_DRAFT_EVENT, multi: true },
     { provide: ARENA_EVENT, useValue: TRADITIONAL_CONSTRUCTED_EVENT_GOLD, multi: true },
     { provide: ARENA_EVENT, useValue: TRADITIONAL_CONSTRUCTED_EVENT_GEMS, multi: true }
   ]

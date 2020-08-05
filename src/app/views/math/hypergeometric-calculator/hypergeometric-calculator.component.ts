@@ -3,7 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 
-import { MathService } from '@mtg-devs/core';
+import { hypergeom, toPercent } from '@mtg-devs/core';
+
 import { DisplayedHypergeomResult } from './hypergeometric-calculator-model';
 
 
@@ -32,8 +33,6 @@ export class HypergeometricCalculatorComponent implements OnInit {
     deckSize: new FormControl(60, [Validators.required, Validators.min(0)])
   });
 
-  constructor(private math: MathService) { }
-
   private buildObservables(): void {
     const results$: Observable<number[]> = this.input.valueChanges.pipe(
       filter(v => v.hits <= v.deckSize && v.draws <= v.deckSize),
@@ -44,7 +43,7 @@ export class HypergeometricCalculatorComponent implements OnInit {
         const results = [];
 
         for (let i = 0; i <= cases; i++) {
-          results.push(this.math.toPercent(this.math.hypergeom(i, hits, draws, deckSize), 1));
+          results.push(toPercent(hypergeom(i, hits, draws, deckSize), 1));
         }
 
         return results;

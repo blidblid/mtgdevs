@@ -14,5 +14,6 @@
 
   .app-right-info-content {
     background: mat-color($background, card);
+    color: mat-color($foreground, hint-text);
   }
 }
